@@ -1,17 +1,86 @@
+/* 
+  1- Console
+    A- Read input
+    B- Write lines
+    B- Confirm
+    B- Loading step
+  2- Io
+    A- CRUD Directories
+    B- CRUD Files
+    C - Search
+  3- Modules
+    A- YAML
+    B- EXCEL 
+  */
 import 'dart:io';
 
-import 'package:darted_cli/darted_cli.dart';
-import 'package:darted_cli/helpers/console.helper.dart';
+import 'package:darted_cli/helpers/console/console.helper.dart';
 import 'package:darted_cli/helpers/style_extension.helper.dart';
-import 'package:darted_cli/models/console/alignment.enum.dart';
-import 'package:darted_cli/models/console/colors.enum.dart';
-import 'package:darted_cli/models/loaders/dots.loader.dart';
-import 'package:darted_cli/models/loaders/progress_bar.loader.dart';
-import 'package:darted_cli/models/loaders/spinner.loader.dart';
-import 'package:darted_cli/models/loaders/wave.loader.dart';
+import 'package:darted_cli/models/console/console_models.exports.dart';
 
 void main(List<String> args) async {
-  ConsoleHelper().printToConsole('Printing this at first'.withColor(ConsoleColor.green));
+  //S1 -- Console Methods
+  //S2 -- Write to the console
+  ConsoleHelper.write('Hello and welcome to the DARTDED CLI'.withColor(ConsoleColor.green));
+  ConsoleHelper.writeSpace();
+  await Future.delayed(Duration(seconds: 2));
+  //S2 -- Read User input
+  // await ConsoleHelper.getUserInput((defValue, timeut) => 'can i get something from you?').then((v) {
+  //   ConsoleHelper.write('I have got a value!: '.withColor(ConsoleColor.green) + v.withTextStyle(ConsoleTextModifier.bold));
+  // });
+  //S2 -- Confirm
+  // await ConsoleHelper.confirm(prompt: 'Are you absolutely sure about this??').then((v) {
+  //   ConsoleHelper.write('Seems like he is '.withColor(ConsoleColor.blue) +
+  //       (v ? 'sure'.withTextStyle(ConsoleTextModifier.bold).withColor(ConsoleColor.green) : 'hesitent'.withTextStyle(ConsoleTextModifier.bold).withColor(ConsoleColor.red)));
+  // });
+  // ConsoleHelper.writeSpace();
+  //S2 -- Loading Steps
+  await ConsoleHelper.loadWithTask(
+    task: 'This is a 4s delay!'.withTextStyle(ConsoleTextModifier.bold).withTextStyle(ConsoleTextModifier.italic).withTextStyle(ConsoleTextModifier.underline),
+    process: () async {
+      await Future.delayed(const Duration(seconds: 4));
+    },
+    loader: ConsoleLoader.progressBar,
+    loaderColor: ConsoleColor.lightMagenta,
+    loaderSpeed: Duration(milliseconds: 200),
+    loaderPosition: LoaderPosition.before,
+    //
+    loaderSuccessReplacement: '✓'.withColor(ConsoleColor.blue).withTextStyle(ConsoleTextModifier.bold),
+    //
+  );
+  // ConsoleHelper.writeSpace();
+  //S1 --
+  //
+  // // Create a directory
+  // await DirectoryUtils.createDirectory('testDir');
+
+  // // Write to a file
+  // await FileUtils.writeFile(
+  //   'testDir/test.txt',
+  //   'Hello, Dart! This is the content of a file i have!',
+  // );
+
+  // // Read from a file
+  // String content = await FileUtils.readFile('testDir/test.txt');
+  // ConsoleHelper().printToConsole(content.withColor(ConsoleColor.blue), newLine: true);
+
+  // // Print directory tree
+  // await DirectoryTreeUtils.printDirectoryTree('testDir');
+  // final loader = SpinnerLoader(speed: Duration(milliseconds: 200), task: 'Deleting the folder!', animationPosition: AnimationPosition.after);
+  // loader.start();
+  // await DirectoryUtils.deleteDirectory('testDir');
+  // await Future.delayed(Duration(seconds: 2));
+  // loader.stop();
+
+  // // Check if a file exists
+  // bool fileExists = await FileExistenceUtils.fileExists('testDir/test.txt');
+  // print(fileExists); // Output: true
+
+  // // Rename a file
+  // await DirectoryUtils.renameFile('testDir/test.txt', 'testDir/renamed.txt');
+
+  // // Delete the file and directory
+  // await FileUtils.deleteFile('testDir/renamed.txt');
   // ConsoleHelper().printToConsole('This is with new Line'.withColor(ConsoleColor.blue), newLine: true);
   // // await Future.delayed(Duration(seconds: 3));
   // ConsoleHelper().printToConsole('This is  with another new line'.withColor(ConsoleColor.red), newLine: true);
@@ -27,19 +96,23 @@ void main(List<String> args) async {
   // ConsoleHelper().printToConsole('This is left...'.withAlignment(ConsoleTextAlignment.left), newLine: true);
   // ConsoleHelper().printToConsole('This is center...'.withAlignment(ConsoleTextAlignment.center), newLine: true);
   // ConsoleHelper().printToConsole('This is right...'.withAlignment(ConsoleTextAlignment.right), newLine: true);
-  await Future.delayed(Duration(seconds: 2));
+  // await Future.delayed(Duration(seconds: 2));
   //
   // await ConsoleHelper().logWithLoadingAnimation('This is a step in here!');
-  ConsoleHelper().printToConsole('', newLine: true);
-  final loader = SpinnerLoader(interval: Duration(milliseconds: 200), task: 'Doing some here!');
-  loader.start();
-  await Future.delayed(Duration(seconds: 10));
-  loader.stop();
-  ConsoleHelper().printToConsole('', newLine: true);
-  final loader2 = DotsLoader(interval: Duration(milliseconds: 200), task: 'Doing some other thing!');
-  loader2.start();
-  await Future.delayed(Duration(seconds: 10));
-  loader2.stop();
+  // ConsoleHelper().printToConsole('', newLine: true);
+  // final loader = SpinnerLoader(speed: Duration(milliseconds: 200), task: 'Doing some here!', animationPosition: AnimationPosition.after);
+  // loader.start();
+  // await Future.delayed(Duration(seconds: 4));
+  // loader.stop();
+  // ConsoleHelper().printToConsole('', newLine: true);
+  // final loader2 = DotsLoader(interval: Duration(milliseconds: 200), task: 'Doing some other thing!');
+  // loader2.start();
+  // await Future.delayed(Duration(seconds: 4));
+  // loader2.stop();
+  // final loader3 = ProgressBarLoader(barWidth: 20, speed: Duration(milliseconds: 200), task: 'Doing some other thing!', animationPosition: AnimationPosition.before);
+  // loader3.start();
+  // await Future.delayed(Duration(seconds: 4));
+  // loader3.stop();
   // await Future.delayed(Duration(seconds: 2));
   // final loader2 = DotsLoader();
   // loader2.start();
@@ -51,8 +124,9 @@ void main(List<String> args) async {
   // await Future.delayed(Duration(seconds: 3));
   // loader3.stop();
   // await Future.delayed(Duration(seconds: 2));
-  ConsoleHelper().printToConsole('');
-  exit(0);
+  // ConsoleHelper().printToConsole('');
+  await Future.delayed(const Duration(seconds: 3));
+  ConsoleHelper.exit(0, withClearing: false, withNewLine: true);
   // String d = await ConsoleHelper().askForInput(
   //   (defValue, timeToTimeout) =>
   //       'Give me something.'.withColor(ConsoleColor.blue) + '(def is $defValue, timeout in $timeToTimeout)'.withColor(ConsoleColor.magenta).withBackgroundColor(ConsoleColor.black),

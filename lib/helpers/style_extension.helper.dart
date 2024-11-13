@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:darted_cli/models/console/alignment.enum.dart';
 import '../models/console/console_models.exports.dart';
 
 extension DartedStyleExtension on String {
