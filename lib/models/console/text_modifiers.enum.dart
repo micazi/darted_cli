@@ -1,4 +1,4 @@
-enum TextModifiers {
+enum ConsoleTextModifier {
   bold,
   italic,
   underline,
@@ -8,15 +8,15 @@ enum TextModifiers {
   reset,
 }
 
-extension TextModifiersExtension on TextModifiers {
+extension TextModifiersExtension on ConsoleTextModifier {
   String get code {
     return switch (this) {
-      TextModifiers.bold => '\x1B[1m',
-      TextModifiers.italic => '\x1B[3m',
-      TextModifiers.underline => '\x1B[4m',
-      TextModifiers.reverse => '\x1B[7m',
-      TextModifiers.blink => '\x1B[5m',
-      TextModifiers.reset => '\x1B[0m',
+      ConsoleTextModifier.bold => '\x1B[1m',
+      ConsoleTextModifier.italic => '\x1B[3m',
+      ConsoleTextModifier.underline => '\x1B[4m',
+      ConsoleTextModifier.reverse => '\x1B[7m',
+      ConsoleTextModifier.blink => '\x1B[5m',
+      ConsoleTextModifier.reset => '\x1B[0m',
     };
   }
 }
