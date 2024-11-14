@@ -1,4 +1,4 @@
-import '../../models/models.exports.dart';
+import '../style_extension.helper.dart';
 import 'methods/methods.exports.dart';
 //
 
@@ -12,10 +12,10 @@ class ConsoleHelper {
       await getUserInputImpl(promptBuilder, defaultValue: defaultValue, timeOut: timeOut);
 
   /// Write text to the console, You can use styling extension like [.withColor() and .withAlignment()]
-  static write(String text, {bool newLine = false, bool overwrite = false}) => writeImpl(text, newLine: newLine, overwrite: overwrite);
+  static void write(String text, {bool newLine = false, bool overwrite = false}) => writeImpl(text, newLine: newLine, overwrite: overwrite);
 
   /// Write a new empty line to the console
-  static writeSpace() => writeSpaceImpl();
+  static void writeSpace() => writeSpaceImpl();
 
   /// Confirm the user's choice with an affirmative keywork or a negative keyword, mostly (yes/no).
   static Future<bool> confirm({String? prompt, List<String>? acceptedAffirmatives}) async => await confirmImpl(prompt: prompt, acceptedAffirmatives: acceptedAffirmatives);
@@ -36,11 +36,11 @@ class ConsoleHelper {
       await loadWithTaskImpl(
         task: task,
         process: process,
-        loader: loader,
-        loaderColor: loaderColor,
-        loaderSpeed: loaderSpeed,
-        loaderPosition: loaderPosition,
-        loaderSuccessReplacement: loaderSuccessReplacement,
+        loader: loader ?? ConsoleLoader.spinner,
+        loaderColor: loaderColor ?? ConsoleColor.cyan,
+        loaderSpeed: loaderSpeed ?? const Duration(milliseconds: 100),
+        loaderPosition: loaderPosition ?? LoaderPosition.before,
+        loaderSuccessReplacement: loaderSuccessReplacement ?? '✓'.withColor(ConsoleColor.green),
         customLoader: customLoader,
       );
 

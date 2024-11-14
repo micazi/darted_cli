@@ -1,7 +1,7 @@
 import 'dart:io';
 
 /// Write text to the console, You can use styling extension like [.withColor() and .withAlignment()]
-writeImpl(String text, {bool newLine = false, bool overwrite = false}) {
+void writeImpl(String text, {bool newLine = false, bool overwrite = false}) {
   if (newLine) {
     stdout.writeln();
   }

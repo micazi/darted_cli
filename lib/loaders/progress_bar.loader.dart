@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import '../models/console/loading/loader_position.enum.dart';
 import '../models/console/loading/loader_base.dart';
 
 class ProgressBarLoader extends ConsoleLoaderBase {
@@ -12,7 +11,7 @@ class ProgressBarLoader extends ConsoleLoaderBase {
     this.barWidth = 10,
     super.speed,
     super.animationColor,
-    super.animationPosition = LoaderPosition.after,
+    super.animationPosition,
   });
 
   @override
@@ -20,7 +19,7 @@ class ProgressBarLoader extends ConsoleLoaderBase {
     isLoading = true;
     int progress = 0;
 
-    Timer.periodic(speed, (timer) {
+    Timer.periodic(speed!, (timer) {
       if (!isLoading) {
         timer.cancel();
       } else {

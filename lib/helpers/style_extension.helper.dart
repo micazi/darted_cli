@@ -1,5 +1,7 @@
 import 'dart:io';
 import '../models/console/console_models.exports.dart';
+//
+export '../models/console/console_models.exports.dart';
 
 extension DartedStyleExtension on String {
   String withColor(ConsoleColor color) => '${color.textCode}$this\x1B[0m';

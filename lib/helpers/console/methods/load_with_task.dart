@@ -9,15 +9,15 @@ Future<void> loadWithTaskImpl({
   required String task,
   required Future Function() process,
   //
-  ConsoleLoader? loader,
-  ConsoleColor? loaderColor,
-  Duration? loaderSpeed,
-  LoaderPosition? loaderPosition,
-  String? loaderSuccessReplacement,
+  required ConsoleLoader loader,
+  required ConsoleColor loaderColor,
+  required Duration loaderSpeed,
+  required LoaderPosition loaderPosition,
+  required String loaderSuccessReplacement,
   //
   ConsoleLoaderBase? customLoader,
 }) async {
-  ConsoleLoaderBase cLoader = customLoader ?? (loader ?? ConsoleLoader.spinner).base(task, animationColor: loaderColor, animationSpeed: loaderSpeed, animationPosition: loaderPosition);
+  ConsoleLoaderBase cLoader = customLoader ?? loader.base(task, animationColor: loaderColor, animationSpeed: loaderSpeed, animationPosition: loaderPosition);
   await cLoader.start();
   await process();
   await cLoader.stop(completionSymbol: loaderSuccessReplacement);

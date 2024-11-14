@@ -1,15 +1,15 @@
 import 'dart:io';
 
 class IOException extends FileSystemException {
-  IOException({String? path}) : super('', path);
+  IOException(String message, {String? path}) : super(message, path);
 }
 
 // Directories
 class DirectoryDoesntExist extends IOException {
-  DirectoryDoesntExist({super.path});
+  DirectoryDoesntExist({super.path}) : super("Directory Doesn't Exist");
 }
 
 // Files
 class FileDoesntExist extends IOException {
-  FileDoesntExist({super.path});
+  FileDoesntExist({super.path}) : super("File Doesn't Exist");
 }

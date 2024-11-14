@@ -7,16 +7,19 @@ Future<void> listTree(
   String path, {
   indent = '',
   bool isLast = true,
-  String? separatorColor = '\x1B[37m', // Default color: White
-  String? fileColor = '\x1B[34m', // Default color: Blue (Files)
-  String? folderColor = '\x1B[32m', // Default color: Green (Folders)
+  String? separatorColor,
+  String? fileColor,
+  String? folderColor,
+  //
+  bool withHiddenDirectories = false,
+  bool withHiddenFiles = true,
 }) async {
   final directory = Directory(path);
   //
   if (await directoryExists(path)) {
     // Print the root directory itself with the custom folder color
     final name = path.split(Platform.pathSeparator).last;
-    stdout.write('$indent${isLast ? '└── ' : '├── '}$folderColor$name\x1B[0m/');
+    print('$indent${isLast ? '└── ' : '├── '}$folderColor$name\x1B[0m/');
 
     // List all entities in the directory
     final entities = await directory.list().toList();
@@ -24,6 +27,13 @@ Future<void> listTree(
     // Separate files and directories
     final files = entities.whereType<File>().toList();
     final dirs = entities.whereType<Directory>().toList();
+    if (!withHiddenDirectories) {
+      dirs.removeWhere((d) => d.path.split(Platform.pathSeparator).last.startsWith('.'));
+    }
+
+    if (!withHiddenFiles) {
+      files.removeWhere((f) => f.path.split(Platform.pathSeparator).last.startsWith('.'));
+    }
 
     // First, print files with the custom file color
     for (var file in files) {

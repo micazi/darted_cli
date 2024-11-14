@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import '../models/console/loading/loader_position.enum.dart';
+import 'package:darted_cli/models/models.exports.dart';
 import '../models/console/loading/loader_base.dart';
 
 class SpinnerLoader extends ConsoleLoaderBase {
@@ -11,13 +11,13 @@ class SpinnerLoader extends ConsoleLoaderBase {
     required super.task,
     super.speed,
     super.animationColor,
-    super.animationPosition = LoaderPosition.after,
+    super.animationPosition,
   });
 
   @override
   Future<void> start() async {
     isLoading = true;
-    Timer.periodic(speed, (timer) {
+    Timer.periodic(speed!, (timer) {
       if (!isLoading) {
         timer.cancel();
       } else {

@@ -6,16 +6,16 @@ import 'loader_position.enum.dart';
 
 abstract class ConsoleLoaderBase {
   String? task;
-  final Duration speed;
-  final LoaderPosition animationPosition;
-  final ConsoleColor animationColor;
+  final Duration? speed;
+  final LoaderPosition? animationPosition;
+  final ConsoleColor? animationColor;
   bool isLoading = false;
 
   ConsoleLoaderBase({
     this.task,
-    this.speed = const Duration(milliseconds: 100),
-    this.animationPosition = LoaderPosition.after,
-    this.animationColor = ConsoleColor.cyan,
+    this.speed,
+    this.animationPosition,
+    this.animationColor,
   });
 
   Future<void> start();
@@ -36,6 +36,6 @@ abstract class ConsoleLoaderBase {
 
   // Helper method to display the animation and task in the correct order
   String formatOutput(String animation) {
-    return animationPosition == LoaderPosition.before ? '${animation.withColor(animationColor)} $task' : '$task ${animation.withColor(animationColor)}';
+    return animationPosition == LoaderPosition.before ? '${animation.withColor(animationColor!)} $task' : '$task ${animation.withColor(animationColor!)}';
   }
 }

@@ -10,13 +10,13 @@ enum ConsoleLoader { spinner, progressBar }
 extension ConsoleLoaderExtension on ConsoleLoader {
   ConsoleLoaderBase base(
     String task, {
-    ConsoleColor? animationColor = ConsoleColor.cyan,
-    Duration? animationSpeed = const Duration(milliseconds: 100),
-    LoaderPosition? animationPosition = LoaderPosition.after,
+    ConsoleColor? animationColor,
+    Duration? animationSpeed,
+    LoaderPosition? animationPosition,
   }) {
     switch (this) {
       case ConsoleLoader.spinner:
-        return SpinnerLoader(task: task, animationColor: animationColor!, speed: animationSpeed!, animationPosition: animationPosition!);
+        return SpinnerLoader(task: task, animationColor: animationColor, speed: animationSpeed, animationPosition: animationPosition);
       case ConsoleLoader.progressBar:
         return ProgressBarLoader(task: task, animationColor: animationColor!, speed: animationSpeed!, animationPosition: animationPosition!);
       //

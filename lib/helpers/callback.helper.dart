@@ -1,49 +1,37 @@
-// import 'console.helper.dart';
+class DartedHelper {
+  // Default Error messages
+  String noCommandError = "Command not recognized. Use --help for available commands.";
+  String noArgumentMatchError = "No matching arguments found. Check --help for available arguments.";
+  String noFlagMatchError = "Invalid flag provided. Use --help to see valid flags.";
 
-// class CallbackHelper {
-//   final List<String> commandStack;
-//   final Map<String, String> arguments;
-//   final Map<String, bool> flags;
-//   final ConsoleHelper console;
+  // Default Help and version responses
+  String helpResponse = "Usage: [command] --help to see available commands and options.";
+  String versionResponse = "darted_CLI version 1.0.0";
 
-//   // Error messages
-//   String noCommandError = "Command not recognized. Use --help for available commands.";
-//   String noArgumentMatchError = "No matching arguments found. Check --help for available arguments.";
-//   String noFlagMatchError = "Invalid flag provided. Use --help to see valid flags.";
+  DartedHelper();
 
-//   // Default Help and version responses
-//   String helpResponse = "Usage: [command] --help to see available commands and options.";
-//   String versionResponse = "darted_CLI version 1.0.0";
+  // Setters for error and response messages
+  void setNoCommandError(String message) {
+    noCommandError = message;
+  }
 
-//   CallbackHelper({
-//     required this.commandStack,
-//     required this.arguments,
-//     required this.flags,
-//     required this.console,
-//   });
+  void setNoArgumentMatchError(String message) {
+    noArgumentMatchError = message;
+  }
 
-//   // Setters for error and response messages
-//   void setNoCommandError(String message) {
-//     noCommandError = message;
-//   }
+  void setNoFlagMatchError(String message) {
+    noFlagMatchError = message;
+  }
 
-//   void setNoArgumentMatchError(String message) {
-//     noArgumentMatchError = message;
-//   }
+  void setHelpResponse(String message) {
+    helpResponse = message;
+  }
 
-//   void setNoFlagMatchError(String message) {
-//     noFlagMatchError = message;
-//   }
+  void setVersionResponse(String message) {
+    versionResponse = message;
+  }
 
-//   void setHelpResponse(String message) {
-//     helpResponse = message;
-//   }
-
-//   void setVersionResponse(String message) {
-//     versionResponse = message;
-//   }
-
-//   // Getters for help and version responses
-//   String getHelpResponse() => helpResponse;
-//   String getVersionResponse() => versionResponse;
-// }
+  // Getters for help and version responses
+  String getHelpResponse() => helpResponse;
+  String getVersionResponse() => versionResponse;
+}
