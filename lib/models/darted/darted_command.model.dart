@@ -4,7 +4,8 @@ import 'darted_flag.model.dart';
 
 class DartedCommand {
   final String name;
-  final Function(Map<String, dynamic?>? arguments, Map<String, bool>? flags) callback;
+  final Function(Map<String, dynamic>? arguments, Map<String, bool>? flags) callback;
+  final String? helperDescription;
   final List<DartedCommand>? subCommands;
   //
   final List<DartedArgument?>? arguments;
@@ -12,6 +13,7 @@ class DartedCommand {
   DartedCommand({
     required this.name,
     required this.callback,
+    this.helperDescription,
     this.subCommands,
     this.arguments,
     this.flags,
@@ -19,6 +21,6 @@ class DartedCommand {
 
   @override
   String toString() {
-    return 'DartedCommand(name: $name, callback: $callback, subCommands: $subCommands, arguments: $arguments, flags: $flags)';
+    return 'DartedCommand(name: $name, callback: $callback, helperDescription: $helperDescription, subCommands: $subCommands, arguments: $arguments, flags: $flags)';
   }
 }

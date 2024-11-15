@@ -1,5 +1,5 @@
 name: darted_cli
-description: A sample command-line application.
+description: darted_cli is a customizable Dart CLI framework for building command-line tools with hierarchical command structures, argument parsing, and flag management.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
