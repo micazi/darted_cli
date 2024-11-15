@@ -1,37 +1,37 @@
-class DartedHelper {
-  // Default Error messages
-  String noCommandError = "Command not recognized. Use --help for available commands.";
-  String noArgumentMatchError = "No matching arguments found. Check --help for available arguments.";
-  String noFlagMatchError = "Invalid flag provided. Use --help to see valid flags.";
+// class DartedHelper {
+//   // Default Error messages
+//   String noCommandError = "Command not recognized. Use --help for available commands.";
+//   String noArgumentMatchError = "No matching arguments found. Check --help for available arguments.";
+//   String noFlagMatchError = "Invalid flag provided. Use --help to see valid flags.";
 
-  // Default Help and version responses
-  String helpResponse = "Usage: [command] --help to see available commands and options.";
-  String versionResponse = "darted_CLI version 1.0.0";
+//   // Default Help and version responses
+//   String helpResponse = "Usage: [command] --help to see available commands and options.";
+//   String versionResponse = "darted_CLI version 1.0.0";
 
-  DartedHelper();
+//   DartedHelper();
 
-  // Setters for error and response messages
-  void setNoCommandError(String message) {
-    noCommandError = message;
-  }
+//   // Setters for error and response messages
+//   void setNoCommandError(String message) {
+//     noCommandError = message;
+//   }
 
-  void setNoArgumentMatchError(String message) {
-    noArgumentMatchError = message;
-  }
+//   void setNoArgumentMatchError(String message) {
+//     noArgumentMatchError = message;
+//   }
 
-  void setNoFlagMatchError(String message) {
-    noFlagMatchError = message;
-  }
+//   void setNoFlagMatchError(String message) {
+//     noFlagMatchError = message;
+//   }
 
-  void setHelpResponse(String message) {
-    helpResponse = message;
-  }
+//   void setHelpResponse(String message) {
+//     helpResponse = message;
+//   }
 
-  void setVersionResponse(String message) {
-    versionResponse = message;
-  }
+//   void setVersionResponse(String message) {
+//     versionResponse = message;
+//   }
 
-  // Getters for help and version responses
-  String getHelpResponse() => helpResponse;
-  String getVersionResponse() => versionResponse;
-}
+//   // Getters for help and version responses
+//   String getHelpResponse() => helpResponse;
+//   String getVersionResponse() => versionResponse;
+// }
