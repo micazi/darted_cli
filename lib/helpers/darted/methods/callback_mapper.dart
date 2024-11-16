@@ -1,14 +1,12 @@
-import 'package:darted_cli/helpers/style_extension.helper.dart';
+import 'package:darted_cli/darted_cli.dart';
+import 'package:darted_cli/modules/yaml/yaml.module.dart';
 
-import '../../../models/models.exports.dart';
-import '../../console/console.helper.dart';
-
-void callbackMapperImpl(
+Future<void> callbackMapperImpl(
   List<DartedCommand> commandsTree,
   Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)> callStack, {
   String Function(DartedCommand command)? customHelpResponse,
   String Function()? customVersionResponse,
-}) {
+}) async {
   // Combine all commands & sub-commands.
   List<DartedCommand> allCommands = [];
   for (var c in commandsTree) {
@@ -16,7 +14,7 @@ void callbackMapperImpl(
     allCommands.addAll(c.subCommands ?? []);
   }
 
-  DartedCommand? lastCommand = allCommands.where((comm) => comm.name == callStack.entries.last.key).firstOrNull;
+  DartedCommand? lastCommand = callStack.isEmpty ? null : allCommands.where((comm) => comm.name == callStack.entries.last.key).firstOrNull;
 
   // Filter arguments for duplications.
   Map<String, dynamic> filteredArguments = {};
@@ -68,7 +66,7 @@ void callbackMapperImpl(
 
     if (filteredFlags.containsKey(DartedFlag.version.name) || filteredFlags.containsKey(DartedFlag.version.abbreviation)) {
       ConsoleHelper.write(
-        (customVersionResponse?.call() ?? defaultVersionMessage()),
+        (customVersionResponse?.call() ?? await defaultVersionMessage()),
       );
       return;
     }
@@ -82,15 +80,13 @@ defaultHelperMessage(DartedCommand command) {
   //
   bool hasSubCommands = command.subCommands != null && command.subCommands!.isNotEmpty;
   Map<String, String> subCommandsHelpersMap = Map.fromEntries(command.subCommands?.map((s) => MapEntry(s.name, s.helperDescription ?? 'No Helper Message.')).toList() ?? []);
-  String? subCommandsMapToString = hasSubCommands
-      ? subCommandsHelpersMap.keys.map((name) => "${name.withColor(ConsoleColor.green).withTextStyle(ConsoleTextModifier.underline)}: ${subCommandsHelpersMap[name]}").reduce((a, b) => "$a\n| $b")
-      : null;
-
+  String? justifiedCommands = hasSubCommands && subCommandsHelpersMap.isNotEmpty ? ConsoleHelper.justifyMap(subCommandsHelpersMap, gapSeparatorSize: 8, preKey: '| ').reduce((a, b) => "$a\n$b") : null;
+  String helperDescription = command.helperDescription != null ? '${command.helperDescription!.withColor(ConsoleColor.blue).withTextStyle(ConsoleTextModifier.italic)}\n|' : '';
   String titleAndHelperMessage = """
 |-------
 |
 | This is the help message of the ${command.name.withColor(ConsoleColor.cyan)} command.
-| ${command.helperDescription?.withColor(ConsoleColor.blue).withTextStyle(ConsoleTextModifier.italic) ?? ''}
+| $helperDescription
 """;
 
   String ending = """
@@ -98,26 +94,30 @@ defaultHelperMessage(DartedCommand command) {
 |-------
 """;
   //
-  return titleAndHelperMessage + (hasSubCommands && subCommandsMapToString != null ? '|\n| $subCommandsMapToString\n' : '') + ending;
+  return titleAndHelperMessage +
+      (hasSubCommands && justifiedCommands != null ? '$justifiedCommands\n' : '')
+      //
+      +
+      ending;
 }
 
-defaultVersionMessage() {
-  // String version =
+Future<String> defaultVersionMessage() async {
+  // scour for the pubspec.yaml
+  String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
+  YamlMap pubspecContent = await YamlModule.load(pubspecPath);
+  String packageName = pubspecContent['name'];
+  String packageVersion = pubspecContent['version'];
   //
 
   String titleAndHelperMessage = """
 |-------
 |
-| ${'Darted_CLI'.withColor(ConsoleColor.lightMagenta).withTextStyle(ConsoleTextModifier.underline)}
+| ${packageName.withColor(ConsoleColor.lightMagenta).withTextStyle(ConsoleTextModifier.underline)}
 |
-| ${'darted_cli'.withColor(ConsoleColor.cyan).withTextStyle(ConsoleTextModifier.bold)} is a customizable Dart CLI framework for building command-line tools with hierarchical command structures, argument parsing, and flag management.
-|
-| Current installed version: 0.1.1
+| Current installed version: $packageVersion
 """;
 
   String ending = """
-|
-| Developed and maintained by Micazi (github.com/micazi)
 |
 |-------
 """;

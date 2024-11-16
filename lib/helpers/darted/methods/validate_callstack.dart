@@ -1,21 +1,30 @@
-import 'package:darted_cli/darted_cli.dart';
+import 'package:darted_cli/modules/ascii-art/ascii_art.module.dart';
 
 import '../../../models/models.exports.dart';
-import '../../console/console.helper.dart';
+import '../../../modules/yaml/yaml.module.dart';
+import '../../helpers.exports.dart';
 
-bool validateCallStackImpl(
+Future<bool> validateCallStackImpl(
   List<DartedCommand> commandsTree,
   Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)> callStack,
   //
   {
+  String? customEntryHelper,
   String Function(String command)? customCommandInvalidError,
   String Function(String command, Map<String, dynamic> argument)? customArgumentInvalidError,
   String Function(String command, Map<String, dynamic> argument, List<String> acceptedOptions)? customArgumentOptionsInvalidError,
   String Function(String command, Map<String, bool> flag)? customFlagInvalidError,
   String Function(String command, Map<String, bool> flag)? customFlagNegatedError,
-}) {
+}) async {
   DartedCommand? currentNode;
   List<DartedCommand> availableCommands = commandsTree;
+
+  // Check if there's no commands in the stack, return the entry helper.
+  if (callStack.isEmpty) {
+    // Entry Helper
+    ConsoleHelper.write(customEntryHelper ?? await defaultEntryHelper(commandsTree));
+    return false;
+  }
 
   // Loop through the callStack entries.
   for (var callStackEntry in callStack.entries) {
@@ -24,11 +33,16 @@ bool validateCallStackImpl(
     Map<String, bool> currentCommandFlags = callStackEntry.value.$2;
 
     // Find the command in the available commands of the current level.
-    currentNode = availableCommands.where((cmd) => cmd.name == currentCommandName).firstOrNull;
+    currentNode = availableCommands.where((cmd) => cmd.name.toLowerCase() == currentCommandName.toLowerCase()).firstOrNull;
 
     // The command hierarchy is invalid.
     if (currentNode == null) {
+      String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
+      YamlMap pubspecContent = await YamlModule.load(pubspecPath);
+      String packageName = pubspecContent['name'];
+
       ConsoleHelper.write(customCommandInvalidError?.call(currentCommandName) ?? "Error: Command ${currentCommandName.withColor(ConsoleColor.blue)} is invalid.\n|-------", newLine: true);
+
       return false;
     }
 
@@ -100,4 +114,8 @@ extension ListExtension<E> on List<E> {
     }
     return !checks.contains(false);
   }
+}
+
+Future<String> defaultEntryHelper(List<DartedCommand> commandsTree) async {
+  return AsciiArtModule.textToAscii('DARTED CLI');
 }

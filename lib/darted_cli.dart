@@ -7,6 +7,16 @@ export 'models/models.exports.dart';
 Future<void> dartedEntry({
   required List<DartedCommand> commandsTree,
   required List<String> input,
+  // Validation Customizations
+  Future<String> Function(List<DartedCommand> commandsTree)? customEntryHelper,
+  String Function(String)? customCommandInvalidError,
+  String Function(String, Map<String, dynamic>)? customArgumentInvalidError,
+  String Function(String, Map<String, dynamic>, List<String>)? customArgumentOptionsInvalidError,
+  String Function(String, Map<String, bool>)? customFlagInvalidError,
+  String Function(String, Map<String, bool>)? customFlagNegatedError,
+  // Responses Customizations
+  String Function(DartedCommand)? customHelpResponse,
+  String Function()? customVersionResponse,
 }) async {
   // Parse the input to Commands,Arguments, and Flags.
   Map<String, dynamic> parsedInputMap = DartedHelper.parseInput(input);
@@ -23,11 +33,28 @@ Future<void> dartedEntry({
     }
   }
 
-  // Validate against the call stack
-  bool validated = DartedHelper.validateCallStack(commandsTree, callStack);
+  String? _customHelper = await customEntryHelper?.call(commandsTree);
 
+  // Validate against the call stack
+  bool validated = await DartedHelper.validateCallStack(
+    commandsTree,
+    callStack,
+    //
+    customEntryHelper: _customHelper,
+    customCommandInvalidError: customCommandInvalidError,
+    customArgumentInvalidError: customArgumentInvalidError,
+    customArgumentOptionsInvalidError: customArgumentOptionsInvalidError,
+    customFlagInvalidError: customFlagInvalidError,
+    customFlagNegatedError: customFlagNegatedError,
+  );
   if (validated) {
     // return the callback
-    DartedHelper.callbackMapper(commandsTree, callStack);
+    await DartedHelper.callbackMapper(
+      commandsTree,
+      callStack,
+      //
+      customHelpResponse: customHelpResponse,
+      customVersionResponse: customVersionResponse,
+    );
   }
 }

@@ -17,6 +17,20 @@ class ConsoleHelper {
   /// Write a new empty line to the console
   static void writeSpace() => writeSpaceImpl();
 
+  /// Write a map of keys and values with justification of the values.
+  static List<String> justifyMap(
+    Map<String, String> map, {
+    String preKey = '',
+    int gapSeparatorSize = 8,
+    String postValue = '',
+  }) =>
+      justifyMapImpl(
+        map,
+        preKey: preKey,
+        gapSeparatorSize: gapSeparatorSize,
+        postValue: postValue,
+      );
+
   /// Confirm the user's choice with an affirmative keywork or a negative keyword, mostly (yes/no).
   static Future<bool> confirm({String? prompt, List<String>? acceptedAffirmatives}) async => await confirmImpl(prompt: prompt, acceptedAffirmatives: acceptedAffirmatives);
 

@@ -1,8 +1,5 @@
 import 'dart:io';
 import 'package:darted_cli/helpers/style_extension.helper.dart';
-import 'package:darted_cli/models/console/styling/colors.enum.dart';
-
-import 'loader_position.enum.dart';
 
 abstract class ConsoleLoaderBase {
   String? task;
