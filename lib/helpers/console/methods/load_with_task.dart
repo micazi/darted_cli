@@ -1,4 +1,4 @@
-import 'package:darted_cli/models/console/loading/loader_position.enum.dart';
+import '../../../models/console/loading/loader_position.enum.dart';
 
 import '../../../models/console/styling/colors.enum.dart';
 import '../../../models/console/loading/console_loader.enum.dart';

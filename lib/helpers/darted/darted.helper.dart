@@ -18,6 +18,7 @@ class DartedHelper {
     List<DartedCommand> commandsTree,
     Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)> callStack, {
     String? customEntryHelper,
+    String? customVersionResponse,
     String Function(String command)? customCommandInvalidError,
     String Function(String command, Map<String, dynamic> argument)? customArgumentInvalidError,
     String Function(String command, Map<String, dynamic> argument, List<String> acceptedOptions)? customArgumentOptionsInvalidError,
@@ -28,6 +29,7 @@ class DartedHelper {
         commandsTree,
         callStack,
         //
+        customVersionResponse: customVersionResponse,
         customEntryHelper: customEntryHelper,
         customCommandInvalidError: customCommandInvalidError,
         customArgumentInvalidError: customArgumentInvalidError,

@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:darted_cli/helpers/io/directory/methods/directory_methods.exports.dart';
-import 'package:darted_cli/models/io/exception.model.dart';
+import '../../directory/methods/directory_methods.exports.dart';
+import '../../../../models/io/exception.model.dart';
 
 Future<Map<String, List<(int matchLine, String lineContent)>>> searchFilesContent(String rootPath, RegExp query, {bool ignoreHidden = true, List<RegExp>? excluded, String? replacement}) async {
   final matches = <String, List<(int matchLine, String lineContent)>>{};

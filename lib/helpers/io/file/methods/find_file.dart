@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:darted_cli/helpers/io/directory/methods/directory_methods.exports.dart';
+import '../../directory/methods/directory_methods.exports.dart';
 import '../../../../models/io/exception.model.dart';
 
 /// Searches for a file with a search query.

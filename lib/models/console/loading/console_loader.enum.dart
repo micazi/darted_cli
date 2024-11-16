@@ -1,7 +1,7 @@
-import 'package:darted_cli/models/console/styling/colors.enum.dart';
-import 'package:darted_cli/models/console/loading/loader_base.dart';
-import 'package:darted_cli/loaders/progress_bar.loader.dart';
-import 'package:darted_cli/loaders/spinner.loader.dart';
+import '../styling/colors.enum.dart';
+import 'loader_base.dart';
+import '../../../loaders/progress_bar.loader.dart';
+import '../../../loaders/spinner.loader.dart';
 
 import 'loader_position.enum.dart';
 

@@ -1,5 +1,6 @@
-import 'package:darted_cli/darted_cli.dart';
-import 'package:darted_cli/modules/yaml/yaml.module.dart';
+import '../../../models/models.exports.dart';
+import '../../../../helpers/helpers.exports.dart';
+import '../print_constants.dart';
 
 Future<void> callbackMapperImpl(
   List<DartedCommand> commandsTree,
@@ -74,53 +75,4 @@ Future<void> callbackMapperImpl(
     // Call the command's supplied callback methods with the filtered data (The last command in the stack).
     lastCommand.callback({...filteredArguments, ...argumentsWithDefaultValue}, {...filteredFlags, ...Map.fromEntries(automaticallyAppliedFlags.map((f) => MapEntry(f, true)))});
   }
-}
-
-defaultHelperMessage(DartedCommand command) {
-  //
-  bool hasSubCommands = command.subCommands != null && command.subCommands!.isNotEmpty;
-  Map<String, String> subCommandsHelpersMap = Map.fromEntries(command.subCommands?.map((s) => MapEntry(s.name, s.helperDescription ?? 'No Helper Message.')).toList() ?? []);
-  String? justifiedCommands = hasSubCommands && subCommandsHelpersMap.isNotEmpty ? ConsoleHelper.justifyMap(subCommandsHelpersMap, gapSeparatorSize: 8, preKey: '| ').reduce((a, b) => "$a\n$b") : null;
-  String helperDescription = command.helperDescription != null ? '${command.helperDescription!.withColor(ConsoleColor.blue).withTextStyle(ConsoleTextModifier.italic)}\n|' : '';
-  String titleAndHelperMessage = """
-|-------
-|
-| This is the help message of the ${command.name.withColor(ConsoleColor.cyan)} command.
-| $helperDescription
-""";
-
-  String ending = """
-|
-|-------
-""";
-  //
-  return titleAndHelperMessage +
-      (hasSubCommands && justifiedCommands != null ? '$justifiedCommands\n' : '')
-      //
-      +
-      ending;
-}
-
-Future<String> defaultVersionMessage() async {
-  // scour for the pubspec.yaml
-  String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
-  YamlMap pubspecContent = await YamlModule.load(pubspecPath);
-  String packageName = pubspecContent['name'];
-  String packageVersion = pubspecContent['version'];
-  //
-
-  String titleAndHelperMessage = """
-|-------
-|
-| ${packageName.withColor(ConsoleColor.lightMagenta).withTextStyle(ConsoleTextModifier.underline)}
-|
-| Current installed version: $packageVersion
-""";
-
-  String ending = """
-|
-|-------
-""";
-  //
-  return titleAndHelperMessage + ending;
 }

@@ -1,0 +1,3 @@
+class PackageLogic {
+  static doSomething() {}
+}

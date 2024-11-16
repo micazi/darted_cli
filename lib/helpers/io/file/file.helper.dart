@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:darted_cli/helpers/io/io.helper.dart';
+import '../io.helper.dart';
 import 'methods/file_methods.exports.dart';
 
 class FileHelper {

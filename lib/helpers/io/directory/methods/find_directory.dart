@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:darted_cli/models/io/exception.model.dart';
+import '../../../../models/io/exception.model.dart';
 
 /// Searches for a directory with a search query.
 Future<List<String>> findDirectoriesByName(String rootPath, String name, {bool exactMatch = true, bool ignoreHidden = true}) async {

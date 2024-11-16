@@ -3,6 +3,8 @@ import 'models/models.exports.dart';
 //
 export 'helpers/helpers.exports.dart';
 export 'models/models.exports.dart';
+export './loaders/loaders.exports.dart';
+export './modules/modules.exports.dart';
 
 Future<void> dartedEntry({
   required List<DartedCommand> commandsTree,
@@ -33,14 +35,15 @@ Future<void> dartedEntry({
     }
   }
 
-  String? _customHelper = await customEntryHelper?.call(commandsTree);
+  String? customMainHelper = await customEntryHelper?.call(commandsTree);
 
   // Validate against the call stack
   bool validated = await DartedHelper.validateCallStack(
     commandsTree,
     callStack,
     //
-    customEntryHelper: _customHelper,
+    customEntryHelper: customMainHelper,
+    customVersionResponse: customVersionResponse?.call(),
     customCommandInvalidError: customCommandInvalidError,
     customArgumentInvalidError: customArgumentInvalidError,
     customArgumentOptionsInvalidError: customArgumentOptionsInvalidError,

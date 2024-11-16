@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:darted_cli/helpers/io/io.helper.dart';
+import '../io.helper.dart';
 import 'methods/directory_methods.exports.dart';
 
 class DirectoryHelper {

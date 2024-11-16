@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:darted_cli/helpers/io/directory/methods/directory_methods.exports.dart';
+import 'directory_methods.exports.dart';
 import '../../../../models/io/exception.model.dart';
 
 /// Rename the directory.

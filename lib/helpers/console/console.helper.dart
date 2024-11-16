@@ -4,8 +4,8 @@ import 'methods/methods.exports.dart';
 
 class ConsoleHelper {
   /// Ask for user input asynchronously, You can add a timeout period and a default value (When the timeout runs or when he enters an empty value).
-  static Future<String> getUserInput(
-    String Function(String?, int?) promptBuilder, {
+  static Future<String> getUserInput({
+    required String Function(String?, int?) promptBuilder,
     String? defaultValue,
     Duration? timeOut,
   }) async =>

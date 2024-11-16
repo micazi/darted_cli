@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:darted_cli/models/models.exports.dart';
+import '../models/models.exports.dart';
 import '../models/console/loading/loader_base.dart';
 
 class SpinnerLoader extends ConsoleLoaderBase {

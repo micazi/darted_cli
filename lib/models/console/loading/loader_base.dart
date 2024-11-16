@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:darted_cli/helpers/style_extension.helper.dart';
+import '../../../helpers/style_extension.helper.dart';
 
 abstract class ConsoleLoaderBase {
   String? task;

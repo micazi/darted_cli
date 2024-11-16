@@ -1,8 +1,7 @@
-import 'package:darted_cli/modules/ascii-art/ascii_art.module.dart';
-
 import '../../../models/models.exports.dart';
-import '../../../modules/yaml/yaml.module.dart';
 import '../../helpers.exports.dart';
+import '../../../modules/modules.exports.dart';
+import '../print_constants.dart';
 
 Future<bool> validateCallStackImpl(
   List<DartedCommand> commandsTree,
@@ -10,6 +9,7 @@ Future<bool> validateCallStackImpl(
   //
   {
   String? customEntryHelper,
+  String? customVersionResponse,
   String Function(String command)? customCommandInvalidError,
   String Function(String command, Map<String, dynamic> argument)? customArgumentInvalidError,
   String Function(String command, Map<String, dynamic> argument, List<String> acceptedOptions)? customArgumentOptionsInvalidError,
@@ -18,6 +18,14 @@ Future<bool> validateCallStackImpl(
 }) async {
   DartedCommand? currentNode;
   List<DartedCommand> availableCommands = commandsTree;
+
+  // check if it's the version call
+  if (callStack.length == 1 && callStack.keys.first == 'version') {
+    ConsoleHelper.write(
+      (customVersionResponse ?? await defaultVersionMessage()),
+    );
+    return false;
+  }
 
   // Check if there's no commands in the stack, return the entry helper.
   if (callStack.isEmpty) {
@@ -37,12 +45,10 @@ Future<bool> validateCallStackImpl(
 
     // The command hierarchy is invalid.
     if (currentNode == null) {
-      String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
-      YamlMap pubspecContent = await YamlModule.load(pubspecPath);
-      String packageName = pubspecContent['name'];
-
-      ConsoleHelper.write(customCommandInvalidError?.call(currentCommandName) ?? "Error: Command ${currentCommandName.withColor(ConsoleColor.blue)} is invalid.\n|-------", newLine: true);
-
+      ConsoleHelper.write(
+        customCommandInvalidError?.call(currentCommandName) ??
+            "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Command ${currentCommandName.withColor(ConsoleColor.blue)} is invalid.\n|\n$endPrint\n",
+      );
       return false;
     }
 
@@ -55,7 +61,7 @@ Future<bool> validateCallStackImpl(
       if (!argumentExists) {
         ConsoleHelper.write(
           customArgumentInvalidError?.call(currentCommandName, Map.fromEntries([MapEntry(arg, currentCommandArguments[arg])])) ??
-              "|-------\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|-------",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n$endPrint\n",
         );
         return false;
       }
@@ -68,7 +74,7 @@ Future<bool> validateCallStackImpl(
         if (!acceptedOptions.containsAll(suppliedOptions)) {
           ConsoleHelper.write(
             customArgumentOptionsInvalidError?.call(currentCommandName, Map.fromEntries([MapEntry(arg, currentCommandArguments[arg])]), acceptedOptions) ??
-                "|-------\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command has invlid options. Supperted (${acceptedOptions.join(',')}) and supplied (${suppliedOptions.join(',')}).\n|-------",
+                "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command has invlid options. Supperted (${acceptedOptions.join(',')}) and supplied (${suppliedOptions.join(',')}).\n|\n$endPrint\n",
           );
           return false;
         }
@@ -85,7 +91,7 @@ Future<bool> validateCallStackImpl(
       if (!flagExists) {
         ConsoleHelper.write(
           customFlagInvalidError?.call(currentCommandName, Map.fromEntries([MapEntry(flag, (currentCommandFlags[flag] ?? false))])) ??
-              "|-------\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|-------",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n$endPrint\n",
         );
         return false;
       }
@@ -93,7 +99,7 @@ Future<bool> validateCallStackImpl(
       if (!canBeNegated && isFlagNegated) {
         ConsoleHelper.write(
           customFlagNegatedError?.call(currentCommandName, Map.fromEntries([MapEntry(flag, (currentCommandFlags[flag] ?? false))])) ??
-              "|-------\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command doesn't support negation.\n|-------",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command doesn't support negation.\n|\n$endPrint\n",
         );
         return false;
       }
@@ -117,5 +123,27 @@ extension ListExtension<E> on List<E> {
 }
 
 Future<String> defaultEntryHelper(List<DartedCommand> commandsTree) async {
-  return AsciiArtModule.textToAscii('DARTED CLI');
+  String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
+  YamlMap pubspecContent = await YamlModule.load(pubspecPath);
+  String packageName = pubspecContent['name'];
+  String packageDescription = pubspecContent['description'].toString().trim();
+  //
+  bool hasSubCommands = commandsTree.isNotEmpty;
+  Map<String, String> subCommandsHelpersMap = Map.fromEntries(commandsTree.map((s) => MapEntry(s.name, s.helperDescription ?? 'No Helper Message.')).toList());
+  String? justifiedCommands = hasSubCommands && subCommandsHelpersMap.isNotEmpty ? ConsoleHelper.justifyMap(subCommandsHelpersMap, gapSeparatorSize: 8, preKey: '| ').reduce((a, b) => "$a\n$b") : null;
+  //
+  String packageArt = await AsciiArtModule.textToAscii(packageName, beforeEachLine: "|  ", color: ConsoleColor.green);
+  String usage = "Usage: $packageName sub-command [arguments...] (flags...)";
+  return """
+$startPrint
+$packageArt
+| $packageDescription
+| 
+| $usage
+| 
+$justifiedCommands
+| 
+| 
+$endPrint\n
+""";
 }

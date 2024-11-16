@@ -10,6 +10,7 @@ class DartedCommand {
   //
   final List<DartedArgument?>? arguments;
   final List<DartedFlag>? flags;
+
   DartedCommand({
     required this.name,
     required this.callback,

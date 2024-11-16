@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:darted_cli/helpers/io/file/methods/file_exists.dart';
-import 'package:darted_cli/models/io/exception.model.dart';
+import 'file_exists.dart';
+import '../../../../models/io/exception.model.dart';
 
 /// Read the content of a file as String
 Future<String> readFileContentAsString(String path) async {

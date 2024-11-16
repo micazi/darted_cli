@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:darted_cli/helpers/style_extension.helper.dart';
+import '../style_extension.helper.dart';
 
 import './directory/directory.helper.dart';
 import './file/file.helper.dart';
