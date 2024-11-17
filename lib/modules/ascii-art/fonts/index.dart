@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 /// Art fonts specific to the ASCII format
 enum AsciiFont {
   cosmic,
@@ -6,5 +8,9 @@ enum AsciiFont {
 }
 
 extension AsciiFontsExtension on AsciiFont {
-  String get path => 'package:darted_cli/lib/assets/${name.toLowerCase()}.flf';
+  Future<Uri?> get path async {
+    final packageUri = Uri.parse('package:darted_cli/lib/assets/${name.toLowerCase()}.flf');
+    Uri? futured = await Isolate.resolvePackageUri(packageUri);
+    return futured;
+  }
 }

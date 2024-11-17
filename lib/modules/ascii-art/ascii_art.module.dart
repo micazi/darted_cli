@@ -17,9 +17,23 @@ class AsciiArtModule {
   }) async {
     //
     print("current working directory: ${IOHelper.directory.getCurrent()}");
-    print("exec path: ${Platform.resolvedExecutable}");
-    String fontFile = await File("${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}" ?? font.path).readAsString();
-    String artText = art.renderFiglet(text, art.Font.text(fontFile));
+    File? file;
+    if (customFontPath != null) {
+      file = await File("${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}");
+    } else {
+      final fontFileUri = await font.path;
+      print("got the uri: $fontFileUri");
+      if (fontFileUri != null) {
+        file = File.fromUri(fontFileUri);
+      }
+    }
+    //
+    String? fileText = await file?.readAsString();
+
+    if (fileText == null) {
+      throw "ASCII art font file parsing failed, make sure the path is correct..";
+    }
+    String artText = art.renderFiglet(text, art.Font.text(fileText));
     // Split the art into lines
     final lines = artText.split('\n');
     // Prepend the character to each line
