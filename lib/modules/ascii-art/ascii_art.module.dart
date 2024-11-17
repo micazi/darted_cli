@@ -20,10 +20,7 @@ class AsciiArtModule {
     // Split the art into lines
     final lines = artText.split('\n');
     // Prepend the character to each line
-    final updatedLines = lines
-        .map((line) =>
-            '$beforeEachLine${line.withColor(color ?? ConsoleColor.grey)}')
-        .toList();
+    final updatedLines = lines.map((line) => '$beforeEachLine${line.withColor(color ?? ConsoleColor.grey)}').toList();
     // Join the updated lines back into a single string
     artText = updatedLines.join('\n');
     return '$artText\n$beforeEachLine';

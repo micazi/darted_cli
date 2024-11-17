@@ -16,6 +16,7 @@ dev_dependencies:
 
 assets:
   - lib/assets/
-  - lib/assets/rectangles.flf
+  - assets/
+  # - lib/assets/rectangles.flf
   # packages/darted_cli/assets/rectangles.flf
   # packages/darted_cli/assets/slant.flf

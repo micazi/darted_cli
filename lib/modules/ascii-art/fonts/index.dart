@@ -6,5 +6,5 @@ enum AsciiFont {
 }
 
 extension AsciiFontsExtension on AsciiFont {
-  String get path => '../../../assets/${name.toLowerCase()}.flf';
+  String get path => 'package:darted_cli/lib/assets/${name.toLowerCase()}.flf';
 }
