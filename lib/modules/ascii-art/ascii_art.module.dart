@@ -16,13 +16,11 @@ class AsciiArtModule {
     ConsoleColor? color,
   }) async {
     //
-    print("current working directory: ${IOHelper.directory.getCurrent()}");
     File? file;
     if (customFontPath != null) {
       file = await File("${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}");
     } else {
       final fontFileUri = await font.path;
-      print("got the uri: $fontFileUri");
       if (fontFileUri != null) {
         file = File.fromUri(fontFileUri);
       }
