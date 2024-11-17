@@ -1,8 +1,6 @@
 import 'dart:io';
 import '../../darted_cli.dart';
-import '../../helpers/style_extension.helper.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
-import 'fonts/index.dart';
 //
 export './fonts/index.dart';
 
@@ -18,7 +16,8 @@ class AsciiArtModule {
     //
     File? file;
     if (customFontPath != null) {
-      file = await File("${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}");
+      file = await File(
+          "${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}");
     } else {
       final fontFileUri = await font.path;
       if (fontFileUri != null) {
@@ -35,7 +34,10 @@ class AsciiArtModule {
     // Split the art into lines
     final lines = artText.split('\n');
     // Prepend the character to each line
-    final updatedLines = lines.map((line) => '$beforeEachLine${line.withColor(color ?? ConsoleColor.grey)}').toList();
+    final updatedLines = lines
+        .map((line) =>
+            '$beforeEachLine${line.withColor(color ?? ConsoleColor.grey)}')
+        .toList();
     // Join the updated lines back into a single string
     artText = updatedLines.join('\n');
     return '$artText\n$beforeEachLine';
