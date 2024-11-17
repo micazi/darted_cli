@@ -1,7 +1,6 @@
 # darted_cli
 
-![Pub Version](https://img.shields.io/pub/v/darted_cli)
-![License](https://img.shields.io/github/license/micazi/darted_cli)
+![Pub Version](https://img.shields.io/pub/v/darted_cli) ![Publisher](https://img.shields.io/pub/publisher/darted_cli) ![Pub Points](https://img.shields.io/pub/points/darted_cli) ![License](https://img.shields.io/github/license/micazi/darted_cli)
 
 ```bash
     ____             __           __    ________    ____
@@ -21,10 +20,8 @@
 1. [Features](#features)
 2. [Installation](#installation)
 3. [Usage](#usage)
-   - [Defining Commands](#defining-commands)
-   - [Executing Commands](#executing-commands)
-4. [Commands Reference](#commands-reference)
-5. [Developer Experience](#developer-experience)
+4. [Developer Experience](#developer-experience)
+5. [Featurs / Requests](#featurs-and-requests)
 6. [License](#license)
 
 ---
@@ -206,7 +203,7 @@ darted_cli is designed with developers in mind, offering:
 **Focus on Logic**: Concentrate on the functionality of your CLI application.
 **Reliable Framework**: Built to handle both simple and complex CLI needs.
 
-## Featurs/Requests
+## Featurs and Requests
 
 [✓] Adding custom Ascii art fonts.
 [ ] Adding more animated loaders.
