@@ -15,6 +15,6 @@ dev_dependencies:
   lints: ^4.0.0
 
 assets:
-  - assets/ascii-fonts/cosmic.flf
-  - assets/ascii-fonts/rectangles.flf
-  - assets/ascii-fonts/slant.flf
+  - packages/darted_cli/assets/ascii-fonts/cosmic.flf
+  - packages/darted_cli/assets/ascii-fonts/rectangles.flf
+  - packages/darted_cli/assets/ascii-fonts/slant.flf
