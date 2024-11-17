@@ -12,3 +12,6 @@ dependencies:
 
 dev_dependencies:
   lints: ^4.0.0
+
+assets:
+  - packages/darted_cli/modules/ascii-art/fonts/
