@@ -15,8 +15,8 @@ dev_dependencies:
   lints: ^4.0.0
 
 assets:
-  - lib/assets/
-  - assets/
+  # - lib/assets/
+  # - assets/
   # - lib/assets/rectangles.flf
   # packages/darted_cli/assets/rectangles.flf
   # packages/darted_cli/assets/slant.flf
