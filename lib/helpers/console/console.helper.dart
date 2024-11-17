@@ -9,10 +9,13 @@ class ConsoleHelper {
     String? defaultValue,
     Duration? timeOut,
   }) async =>
-      await getUserInputImpl(promptBuilder, defaultValue: defaultValue, timeOut: timeOut);
+      await getUserInputImpl(promptBuilder,
+          defaultValue: defaultValue, timeOut: timeOut);
 
   /// Write text to the console, You can use styling extension like [.withColor() and .withAlignment()]
-  static void write(String text, {bool newLine = false, bool overwrite = false}) => writeImpl(text, newLine: newLine, overwrite: overwrite);
+  static void write(String text,
+          {bool newLine = false, bool overwrite = false}) =>
+      writeImpl(text, newLine: newLine, overwrite: overwrite);
 
   /// Write a new empty line to the console
   static void writeSpace() => writeSpaceImpl();
@@ -32,7 +35,10 @@ class ConsoleHelper {
       );
 
   /// Confirm the user's choice with an affirmative keywork or a negative keyword, mostly (yes/no).
-  static Future<bool> confirm({String? prompt, List<String>? acceptedAffirmatives}) async => await confirmImpl(prompt: prompt, acceptedAffirmatives: acceptedAffirmatives);
+  static Future<bool> confirm(
+          {String? prompt, List<String>? acceptedAffirmatives}) async =>
+      await confirmImpl(
+          prompt: prompt, acceptedAffirmatives: acceptedAffirmatives);
 
   /// Supply a task and a process future for that task, and show a beautiful loader till the task is finished. You can also customize a replacement output when it's done.
   static Future<void> loadWithTask({
@@ -54,7 +60,8 @@ class ConsoleHelper {
         loaderColor: loaderColor ?? ConsoleColor.cyan,
         loaderSpeed: loaderSpeed ?? const Duration(milliseconds: 100),
         loaderPosition: loaderPosition ?? LoaderPosition.before,
-        loaderSuccessReplacement: loaderSuccessReplacement ?? '✓'.withColor(ConsoleColor.green),
+        loaderSuccessReplacement:
+            loaderSuccessReplacement ?? '✓'.withColor(ConsoleColor.green),
         customLoader: customLoader,
       );
 
@@ -62,5 +69,7 @@ class ConsoleHelper {
   static void clear() => clearImpl();
 
   /// Exit the console session.
-  static void exit(int code, {bool withNewLine = true, bool withClearing = false}) => exitImpl(code, withNewLine: withNewLine, withClearing: withClearing);
+  static void exit(int code,
+          {bool withNewLine = true, bool withClearing = false}) =>
+      exitImpl(code, withNewLine: withNewLine, withClearing: withClearing);
 }

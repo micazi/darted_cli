@@ -13,7 +13,8 @@ Future<void> dartedEntry({
   Future<String> Function(List<DartedCommand> commandsTree)? customEntryHelper,
   String Function(String)? customCommandInvalidError,
   String Function(String, Map<String, dynamic>)? customArgumentInvalidError,
-  String Function(String, Map<String, dynamic>, List<String>)? customArgumentOptionsInvalidError,
+  String Function(String, Map<String, dynamic>, List<String>)?
+      customArgumentOptionsInvalidError,
   String Function(String, Map<String, bool>)? customFlagInvalidError,
   String Function(String, Map<String, bool>)? customFlagNegatedError,
   // Responses Customizations
@@ -27,9 +28,12 @@ Future<void> dartedEntry({
   List<String> parsedFlags = parsedInputMap['flags'];
 
   // Identify the callstack with the hierarchial order.
-  Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)> callStack = {};
+  Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)>
+      callStack = {};
   for (var currentParsedCommand in parsedCommands) {
-    MapEntry<String, (Map<String, dynamic>, Map<String, bool>)>? entry = DartedHelper.parseCommandToCallStack(currentParsedCommand, input, parsedCommands, parsedArguments, parsedFlags);
+    MapEntry<String, (Map<String, dynamic>, Map<String, bool>)>? entry =
+        DartedHelper.parseCommandToCallStack(currentParsedCommand, input,
+            parsedCommands, parsedArguments, parsedFlags);
     if (entry != null) {
       callStack.addEntries([entry]);
     }

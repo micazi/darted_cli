@@ -28,11 +28,13 @@ Future<void> listTree(
     final files = entities.whereType<File>().toList();
     final dirs = entities.whereType<Directory>().toList();
     if (!withHiddenDirectories) {
-      dirs.removeWhere((d) => d.path.split(Platform.pathSeparator).last.startsWith('.'));
+      dirs.removeWhere(
+          (d) => d.path.split(Platform.pathSeparator).last.startsWith('.'));
     }
 
     if (!withHiddenFiles) {
-      files.removeWhere((f) => f.path.split(Platform.pathSeparator).last.startsWith('.'));
+      files.removeWhere(
+          (f) => f.path.split(Platform.pathSeparator).last.startsWith('.'));
     }
 
     // First, print files with the custom file color

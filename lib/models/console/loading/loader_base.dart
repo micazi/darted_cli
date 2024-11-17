@@ -33,6 +33,8 @@ abstract class ConsoleLoaderBase {
 
   // Helper method to display the animation and task in the correct order
   String formatOutput(String animation) {
-    return animationPosition == LoaderPosition.before ? '${animation.withColor(animationColor!)} $task' : '$task ${animation.withColor(animationColor!)}';
+    return animationPosition == LoaderPosition.before
+        ? '${animation.withColor(animationColor!)} $task'
+        : '$task ${animation.withColor(animationColor!)}';
   }
 }

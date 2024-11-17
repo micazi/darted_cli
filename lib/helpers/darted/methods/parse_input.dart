@@ -27,7 +27,8 @@ parseInputImpl(List<String> input) {
         flags.add(input[i].replaceAll('--', ''));
       } else {
         // Argument
-        arguments.addEntries([MapEntry(input[i].replaceAll('-', ''), input[i + 1])]);
+        arguments
+            .addEntries([MapEntry(input[i].replaceAll('-', ''), input[i + 1])]);
       }
     }
     // 3- has -s -some -no-some
@@ -40,7 +41,8 @@ parseInputImpl(List<String> input) {
         flags.add(input[i].replaceAll('-', ''));
       } else {
         // Argument
-        arguments.addEntries([MapEntry(input[i].replaceAll('-', ''), input[i + 1])]);
+        arguments
+            .addEntries([MapEntry(input[i].replaceAll('-', ''), input[i + 1])]);
       }
     }
   }

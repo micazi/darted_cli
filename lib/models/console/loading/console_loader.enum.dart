@@ -16,12 +16,24 @@ extension ConsoleLoaderExtension on ConsoleLoader {
   }) {
     switch (this) {
       case ConsoleLoader.spinner:
-        return SpinnerLoader(task: task, animationColor: animationColor, speed: animationSpeed, animationPosition: animationPosition);
+        return SpinnerLoader(
+            task: task,
+            animationColor: animationColor,
+            speed: animationSpeed,
+            animationPosition: animationPosition);
       case ConsoleLoader.progressBar:
-        return ProgressBarLoader(task: task, animationColor: animationColor!, speed: animationSpeed!, animationPosition: animationPosition!);
+        return ProgressBarLoader(
+            task: task,
+            animationColor: animationColor!,
+            speed: animationSpeed!,
+            animationPosition: animationPosition!);
       //
       default:
-        return SpinnerLoader(task: task, animationColor: animationColor!, speed: animationSpeed!, animationPosition: animationPosition!);
+        return SpinnerLoader(
+            task: task,
+            animationColor: animationColor!,
+            speed: animationSpeed!,
+            animationPosition: animationPosition!);
     }
   }
 }

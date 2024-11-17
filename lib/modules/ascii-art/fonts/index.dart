@@ -1,3 +1,4 @@
+/// Art fonts specific to the ASCII format
 enum AsciiFont {
   cosmic,
   slant,

@@ -28,7 +28,8 @@ Future<String> getUserInputImpl(
     if ((input.endsWith('\n')) || (input.endsWith('\r'))) {
       // Complete when Enter key is pressed
       if (!inputCompleter.isCompleted) {
-        inputCompleter.complete(input.trim().isEmpty ? (defaultValue ?? '') : input);
+        inputCompleter
+            .complete(input.trim().isEmpty ? (defaultValue ?? '') : input);
       }
       timer?.cancel(); // Cancel the timer if input is received
     } else {

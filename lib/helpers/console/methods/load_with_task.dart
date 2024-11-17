@@ -17,7 +17,11 @@ Future<void> loadWithTaskImpl({
   //
   ConsoleLoaderBase? customLoader,
 }) async {
-  ConsoleLoaderBase cLoader = customLoader ?? loader.base(task, animationColor: loaderColor, animationSpeed: loaderSpeed, animationPosition: loaderPosition);
+  ConsoleLoaderBase cLoader = customLoader ??
+      loader.base(task,
+          animationColor: loaderColor,
+          animationSpeed: loaderSpeed,
+          animationPosition: loaderPosition);
   await cLoader.start();
   await process();
   await cLoader.stop(completionSymbol: loaderSuccessReplacement);

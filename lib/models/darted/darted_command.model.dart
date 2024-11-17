@@ -4,7 +4,8 @@ import 'darted_flag.model.dart';
 
 class DartedCommand {
   final String name;
-  final Function(Map<String, dynamic>? arguments, Map<String, bool>? flags) callback;
+  final Function(Map<String, dynamic>? arguments, Map<String, bool>? flags)
+      callback;
   final String? helperDescription;
   final List<DartedCommand>? subCommands;
   //

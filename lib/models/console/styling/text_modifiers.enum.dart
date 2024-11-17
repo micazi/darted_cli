@@ -1,3 +1,4 @@
+/// TextStyle modifying codes specific to the console.
 enum ConsoleTextModifier {
   bold,
   italic,

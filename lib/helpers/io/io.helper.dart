@@ -31,5 +31,6 @@ class IOHelper {
 }
 
 extension PathSeparatorExtension on String {
-  String replaceSeparator() => replaceAll(RegExp(r'[\\/]+'), Platform.pathSeparator);
+  String replaceSeparator() =>
+      replaceAll(RegExp(r'[\\/]+'), Platform.pathSeparator);
 }

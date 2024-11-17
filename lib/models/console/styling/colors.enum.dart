@@ -1,3 +1,4 @@
+/// Color codes specific to the console.
 enum ConsoleColor {
   black,
   grey,

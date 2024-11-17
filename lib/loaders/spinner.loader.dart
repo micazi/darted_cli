@@ -4,7 +4,18 @@ import '../models/models.exports.dart';
 import '../models/console/loading/loader_base.dart';
 
 class SpinnerLoader extends ConsoleLoaderBase {
-  final List<String> spinnerSymbols = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+  final List<String> spinnerSymbols = [
+    '⠋',
+    '⠙',
+    '⠹',
+    '⠸',
+    '⠼',
+    '⠴',
+    '⠦',
+    '⠧',
+    '⠇',
+    '⠏'
+  ];
   int index = 0;
 
   SpinnerLoader({
@@ -21,7 +32,8 @@ class SpinnerLoader extends ConsoleLoaderBase {
       if (!isLoading) {
         timer.cancel();
       } else {
-        stdout.write('\r${formatOutput(spinnerSymbols[index % spinnerSymbols.length])}');
+        stdout.write(
+            '\r${formatOutput(spinnerSymbols[index % spinnerSymbols.length])}');
         index++;
       }
     });

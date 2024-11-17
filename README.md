@@ -1,7 +1,7 @@
 # darted_cli
 
 ![Pub Version](https://img.shields.io/pub/v/darted_cli)
-![License](https://img.shields.io/github/license/yourrepo/darted_cli)
+![License](https://img.shields.io/github/license/micazi/darted_cli)
 
 ```bash
     ____             __           __    ________    ____
@@ -208,7 +208,8 @@ darted_cli is designed with developers in mind, offering:
 
 ## Featurs/Requests
 
-[ ] Adding custom Ascii art fonts.
+[✓] Adding custom Ascii art fonts.
+[ ] Adding more animated loaders.
 [ ] You tell me!
 
 ## License
