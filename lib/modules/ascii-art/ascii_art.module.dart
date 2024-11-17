@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../../darted_cli.dart';
 import '../../helpers/style_extension.helper.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'fonts/index.dart';
@@ -15,7 +16,9 @@ class AsciiArtModule {
     ConsoleColor? color,
   }) async {
     //
-    String fontFile = await File(customFontPath ?? font.path).readAsString();
+    print("current working directory: ${IOHelper.directory.getCurrent()}");
+    print("exec path: ${Platform.resolvedExecutable}");
+    String fontFile = await File("${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}" ?? font.path).readAsString();
     String artText = art.renderFiglet(text, art.Font.text(fontFile));
     // Split the art into lines
     final lines = artText.split('\n');
