@@ -1,10 +1,8 @@
-import 'helpers/darted/darted.helper.dart';
-import 'models/models.exports.dart';
+import 'src/darted/models/darted_models.exports.dart';
+import 'src/darted/helper/darted.helper.dart';
 //
-export 'helpers/helpers.exports.dart';
-export 'models/models.exports.dart';
-export './loaders/loaders.exports.dart';
-export './modules/modules.exports.dart';
+export 'src/darted/models/darted_models.exports.dart';
+export 'src/darted/helper/darted.helper.dart';
 
 Future<void> dartedEntry({
   required List<DartedCommand> commandsTree,

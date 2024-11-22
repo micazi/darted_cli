@@ -13,6 +13,8 @@
 
 **`darted_cli`** is a powerful and developer-friendly Dart package for building feature-rich, structured command-line interfaces (CLI). It simplifies the process of creating command trees, parsing arguments and flags, and handling input validation with a focus on developer experience and ease of use.
 
+You can see how to implement your next big idea using _darted_cli_ through [This Blog Post](https://medium.com/towardsdev/heres-what-i-built-with-darted-cli-meet-flutter-loc-0cbb33c1138d).
+
 ---
 
 ## Table of Contents
@@ -206,6 +208,7 @@ darted_cli is designed with developers in mind, offering:
 ## Featurs and Requests
 
 [✓] Adding custom Ascii art fonts.
+[ ] Adding Prompt to choose an option.
 [ ] Adding option to compile.
 [ ] Adding more animated loaders.
 [ ] You tell me!
