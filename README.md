@@ -207,11 +207,11 @@ darted_cli is designed with developers in mind, offering:
 
 ## Featurs and Requests
 
-[✓] Adding custom Ascii art fonts.
-[ ] Adding Prompt to choose an option.
-[ ] Adding option to compile.
-[ ] Adding more animated loaders.
-[ ] You tell me!
+- [x] Adding custom Ascii art fonts.
+- [ ] Adding Prompt to choose an option.
+- [ ] Adding option to compile.
+- [ ] Adding more animated loaders.
+- [ ] You tell me!
 
 ## License
 
