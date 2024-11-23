@@ -9,7 +9,8 @@ enum AsciiFont {
 
 extension AsciiFontsExtension on AsciiFont {
   Future<Uri?> get path async {
-    final packageUri = Uri.parse('package:darted_cli/src/modules/ascii-art/fonts/${name.toLowerCase()}.flf');
+    final packageUri = Uri.parse(
+        'package:darted_cli/src/modules/ascii-art/fonts/${name.toLowerCase()}.flf');
     Uri? futured = await Isolate.resolvePackageUri(packageUri);
     return futured;
   }
