@@ -2,6 +2,7 @@ export 'file_exists.dart';
 export 'find_file.dart';
 export 'search_files.dart';
 export 'list_all.dart';
+export 'copy_file.dart';
 //
 export 'read_file_content.dart';
 export 'write_to_file.dart';

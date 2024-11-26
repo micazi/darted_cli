@@ -25,6 +25,7 @@ class FileHelper {
       await findFilesByPattern(rootPath.replaceSeparator(), pattern,
           ignoreHidden: ignoreHidden);
 
+  /// Search through all the files for a RegExp pattern.
   Future<Map<String, List<(int matchLine, String lineContent)>>> search(
           String rootPath, RegExp pattern,
           {bool ignoreHidden = true, List<RegExp> excluded = const []}) async =>
@@ -50,6 +51,10 @@ class FileHelper {
   /// Rename the file
   Future<void> rename(String path, String newName) async =>
       await renameFile(path.replaceSeparator(), newName);
+
+  /// Copies a file from source path to a new path
+  Future<void> copy(String filePath, String newPath) async =>
+      await copyImpl(filePath.replaceSeparator(), newPath.replaceSeparator());
 
   /// Moves a file to a new path
   Future<void> move(String oldPath, String newPath) async =>

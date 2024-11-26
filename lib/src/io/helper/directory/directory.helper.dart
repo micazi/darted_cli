@@ -39,6 +39,11 @@ class DirectoryHelper {
   Future<void> rename(String path, String newName) async =>
       await renameDirectory(path.replaceSeparator(), newName);
 
+  /// Copies a directory to a new path
+  Future<void> copy(String directoryPath, String destinationPath) async =>
+      await copyImpl(
+          directoryPath.replaceSeparator(), destinationPath.replaceSeparator());
+
   /// Moves a directory to a new path
   Future<void> move(String oldPath, String newPath) async =>
       await moveDirectory(
