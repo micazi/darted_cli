@@ -3,3 +3,4 @@
 **[0.1.2]** - Fixed some assets-related issues.
 **[0.1.3]** - Documentation Fixes.
 **[0.1.4]** - asset-related fixes.
+**[0.1.4]** - Fixed 'help/version flags that are applied by default not being parsed'.
