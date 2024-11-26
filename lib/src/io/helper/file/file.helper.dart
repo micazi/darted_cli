@@ -8,6 +8,11 @@ class FileHelper {
   Future<bool> exists(String path) async =>
       await fileExists(path.replaceSeparator());
 
+  /// List all the files in this root directory.
+  Future<List<File>> listAll(String rootPath,
+          {bool includeHidden = false}) async =>
+      await listAllImpl(rootPath, includeHidden: includeHidden);
+
   /// Search for a file bu it's name.
   Future<List<String>> find(String rootPath, String name,
           {bool isExactMatch = false, bool ignoreHidden = true}) async =>

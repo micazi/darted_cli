@@ -12,8 +12,8 @@ class IOHelper {
   static DirectoryHelper directory = DirectoryHelper();
   static FileHelper file = FileHelper();
 
-  /// Lists all the directories & files in the give directory path.
-  static Future<void> list({
+  /// Prints a list of all the directories & files in the give directory path.
+  static Future<void> printTree({
     String? path,
     ConsoleColor? separatorColor,
     ConsoleColor? folderColor,
@@ -22,7 +22,7 @@ class IOHelper {
     bool? withHiddenDirectories,
     bool? withHiddenFiles,
   }) async =>
-      await listTree(
+      await printDirectoryTree(
         path?.replaceSeparator() ?? IOHelper.directory.getCurrent(),
         separatorColor: separatorColor?.textCode ?? ConsoleColor.white.textCode,
         fileColor: fileColor?.textCode ?? ConsoleColor.blue.textCode,

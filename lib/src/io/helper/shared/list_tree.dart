@@ -3,7 +3,7 @@ import 'dart:io';
 import '../../models/exception.model.dart';
 import '../directory/methods/directory_methods.exports.dart';
 
-Future<void> listTree(
+Future<void> printDirectoryTree(
   String path, {
   indent = '',
   bool isLast = true,
@@ -52,7 +52,7 @@ Future<void> listTree(
       final isLastDir = i == dirs.length - 1;
 
       // Recurse into subdirectories
-      await listTree(
+      await printDirectoryTree(
         dir.path,
         indent: nextIndent,
         isLast: isLastDir,

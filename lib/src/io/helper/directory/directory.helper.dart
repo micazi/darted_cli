@@ -14,6 +14,11 @@ class DirectoryHelper {
   Future<bool> exists(String path) async =>
       await directoryExists(path.replaceSeparator());
 
+  /// List all the directories in this root directory.
+  Future<List<Directory>> listAll(String rootPath,
+          {bool includeHidden = false}) async =>
+      await listAllImpl(rootPath, includeHidden: includeHidden);
+
   /// Search for a directory by it's name.
   Future<List<String>> find(String rootPath, String name,
           {bool isExactMatch = false, bool ignoreHidden = true}) async =>
