@@ -11,7 +11,7 @@ Future<File> createFile(String path, {bool createFoldersInPath = true}) async {
   String directoryPath =
       path.replaceAll("${Platform.pathSeparator}$fileName", '');
   bool directoryPathExists = await directoryExists(directoryPath);
-  if (!directoryPathExists) {
+  if (!directoryPathExists && !createFoldersInPath) {
     throw DirectoryDoesntExist(path: directoryPath);
   }
   //

@@ -5,3 +5,4 @@
 **[0.1.4]** - asset-related fixes.
 **[0.1.5]** - Fixed 'help/version flags that are applied by default not being parsed'.
 **[0.1.6]** - Added two methods for the IO Helper to list files/directories in a root path.
+**[0.1.7]** - Updated the implementation to create Files.
