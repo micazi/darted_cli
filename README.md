@@ -208,6 +208,7 @@ darted_cli is designed with developers in mind, offering:
 ## Featurs and Requests
 
 - [x] Adding custom Ascii art fonts.
+- [x] Adding Command Execution functionality.
 - [ ] Adding Prompt to choose an option.
 - [ ] Adding option to compile.
 - [ ] Adding more animated loaders.

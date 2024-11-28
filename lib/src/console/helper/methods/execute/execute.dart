@@ -1,8 +1,8 @@
 import 'dart:io';
-
+import '../../../../../console_helper.dart';
 import 'parse_args.dart';
 
-Future<void> executeCommandImpl(String commandWithArgs) async {
+Future<dynamic> executeCommandImpl(String commandWithArgs) async {
   try {
     // Parse the command and arguments
     final commandArgs = parseArguments(commandWithArgs);
@@ -11,21 +11,15 @@ Future<void> executeCommandImpl(String commandWithArgs) async {
     final result = await Process.run(commandArgs[0], commandArgs.sublist(1));
 
     // Handle the result (check for errors and print output)
-    if (result.exitCode != 0) {
-      throw Exception('Command execution failed: ${result.stderr}');
+    if (result.exitCode != 0 || result.stderr.isNotEmpty) {
+      throw ConsoleException(error: result.stderr.toString());
     }
 
-    // Print output
+    // Return the output if it exists
     if (result.stdout.isNotEmpty) {
-      print(result.stdout);
+      return result.stdout;
     }
-
-    if (result.stderr.isNotEmpty) {
-      print('Error: ${result.stderr}');
-    }
-
-    print('Command executed successfully: ${commandArgs.join(' ')}');
   } catch (e) {
-    print('Error executing command: $e');
+    throw ConsoleException(error: e.toString());
   }
 }
