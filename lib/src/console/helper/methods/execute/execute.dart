@@ -12,7 +12,7 @@ Future<dynamic> executeCommandImpl(String commandWithArgs) async {
 
     // Handle the result (check for errors and print output)
     if (result.exitCode != 0 || result.stderr.isNotEmpty) {
-      throw ConsoleException(error: result.stderr.toString());
+      throw result.stderr.toString();
     }
 
     // Return the output if it exists
@@ -20,6 +20,6 @@ Future<dynamic> executeCommandImpl(String commandWithArgs) async {
       return result.stdout;
     }
   } catch (e) {
-    throw ConsoleException(error: e.toString());
+    throw e.toString();
   }
 }
