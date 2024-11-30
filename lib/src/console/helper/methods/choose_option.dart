@@ -1,11 +1,11 @@
 import 'package:dart_console/dart_console.dart';
 
+final console = Console();
 List<String> promptForOptionWithArrows(
   String message,
   List<String> options, {
   bool allowMultiple = false,
 }) {
-  final console = Console();
   //
   console.clearScreen();
   console.resetCursorPosition();
@@ -16,24 +16,16 @@ List<String> promptForOptionWithArrows(
   int currentSelection = 0;
   final selectedIndices = <int>{}; // Tracks indices of selected options
 
-  while (true) {
-    // Display options with current selection highlighted
-    for (var i = 0; i < options.length; i++) {
-      final isSelected = selectedIndices.contains(i);
-      if (i == currentSelection) {
-        console.setForegroundColor(ConsoleColor.white);
-        console.setBackgroundColor(ConsoleColor.blue);
-        console.write(isSelected ? '[x] ' : '[ ] ');
-        console.writeLine(options[i]);
-        console.resetColorAttributes();
-      } else {
-        console.write(isSelected ? '[x] ' : '[ ] ');
-        console.writeLine(options[i]);
-      }
-    }
+  // Initial rendering of options
+  for (var i = 0; i < options.length; i++) {
+    _renderOption(i, options[i], selected: selectedIndices.contains(i), highlight: i == currentSelection);
+  }
 
+  while (true) {
     // Wait for user input
     final key = console.readKey();
+
+    int previousSelection = currentSelection;
 
     if (key.controlChar == ControlCharacter.arrowUp) {
       currentSelection = (currentSelection - 1) % options.length;
@@ -47,6 +39,7 @@ List<String> promptForOptionWithArrows(
       } else {
         selectedIndices.add(currentSelection);
       }
+      _renderOption(currentSelection, options[currentSelection], selected: selectedIndices.contains(currentSelection), highlight: true);
     } else if (key.controlChar == ControlCharacter.enter) {
       if (allowMultiple) {
         // For multi-select, return all selected options
@@ -57,7 +50,24 @@ List<String> promptForOptionWithArrows(
       }
     }
 
-    // Clear screen and re-render options
-    console.cursorUp();
+    // Update only the previous and current selections
+    if (previousSelection != currentSelection) {
+      _renderOption(previousSelection, options[previousSelection], selected: selectedIndices.contains(previousSelection), highlight: false);
+      _renderOption(currentSelection, options[currentSelection], selected: selectedIndices.contains(currentSelection), highlight: true);
+    }
+  }
+}
+
+/// Renders a single option at the current cursor position.
+void _renderOption(int index, String option, {required bool selected, required bool highlight}) {
+  console.cursorPosition = Coordinate((console.cursorPosition?.row ?? 0) - index, 0);
+  if (highlight) {
+    console.setForegroundColor(ConsoleColor.white);
+    console.setBackgroundColor(ConsoleColor.blue);
+  }
+  console.write(selected ? '[x] ' : '[ ] ');
+  console.writeLine(option);
+  if (highlight) {
+    console.resetColorAttributes();
   }
 }
