@@ -67,6 +67,7 @@ List<String> promptForOptionWithArrows(
       }
       updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
     } else if (key.controlChar == ControlCharacter.enter) {
+      ConsoleHelper.writeSpace();
       // Show cursor after selection is complete
       console.showCursor();
 
