@@ -8,6 +8,7 @@ List<String> promptForOptionWithArrows(
 }) {
   //
   // Clear screen and display the message
+  // Clear screen and display the message
   console.clearScreen();
   console.writeLine(message);
   console.writeLine('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
@@ -18,31 +19,24 @@ List<String> promptForOptionWithArrows(
   void renderOptions() {
     for (int i = 0; i < options.length; i++) {
       console.cursorPosition = Coordinate(i + 3, 0); // Adjust position for options
-      if (i == currentSelection) {
-        // Highlight current selection
-        console.setForegroundColor(ConsoleColor.white);
-        console.setBackgroundColor(ConsoleColor.blue);
-      } else {
-        // Normal option
-        console.resetColorAttributes();
-      }
 
       final isSelected = selectedIndices.contains(i);
-      console.writeLine('${isSelected ? "[x]" : "[ ]"} ${options[i]}');
+      final isHighlighted = i == currentSelection;
+
+      final indicator = isHighlighted ? '→' : ' '; // Arrow for current option
+      final checkbox = isSelected ? '[x]' : '[ ]'; // Checkbox for selection
+
+      console.writeLine('$indicator $checkbox ${options[i]}');
     }
-    console.resetColorAttributes(); // Reset after rendering
   }
 
   void updateOption(int index, bool highlight, bool selected) {
-    console.cursorPosition = Coordinate(index + 3, 0); // Adjust for options
-    if (highlight) {
-      console.setForegroundColor(ConsoleColor.white);
-      console.setBackgroundColor(ConsoleColor.blue);
-    } else {
-      console.resetColorAttributes();
-    }
-    console.writeLine('${selected ? "[x]" : "[ ]"} ${options[index]}');
-    console.resetColorAttributes();
+    console.cursorPosition = Coordinate(index + 3, 0); // Adjust position for options
+
+    final indicator = highlight ? '→' : ' ';
+    final checkbox = selected ? '[x]' : '[ ]';
+
+    console.writeLine('$indicator $checkbox ${options[index]}');
   }
 
   // Initial render
