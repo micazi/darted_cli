@@ -8,14 +8,13 @@ List<String> promptForOptionWithArrows(
   List<String> options, {
   bool allowMultiple = false,
 }) {
-  //
+  // Hide the cursor before user input
+  console.hideCursor();
+
   // Clear screen and display the message
-  // Clear screen and display the message
-  ConsoleHelper.clear();
-  // console.clearScreen();
-  ConsoleHelper.write(message);
-  // console.writeLine(message);
-  ConsoleHelper.write('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
+  console.clearScreen();
+  console.writeLine(message);
+  console.writeLine('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
 
   int currentSelection = 0;
   final selectedIndices = <int>{}; // To track selected options in multi-select
@@ -30,7 +29,7 @@ List<String> promptForOptionWithArrows(
       final indicator = isHighlighted ? '→' : ' '; // Arrow for current option
       final checkbox = isSelected ? '[x]' : '[ ]'; // Checkbox for selection
 
-      ConsoleHelper.write('$indicator $checkbox ${options[i]}');
+      console.writeLine('$indicator $checkbox ${options[i]}');
     }
   }
 
@@ -40,7 +39,7 @@ List<String> promptForOptionWithArrows(
     final indicator = highlight ? '→' : ' ';
     final checkbox = selected ? '[x]' : '[ ]';
 
-    ConsoleHelper.write('$indicator $checkbox ${options[index]}');
+    console.writeLine('$indicator $checkbox ${options[index]}');
   }
 
   // Initial render
@@ -68,6 +67,9 @@ List<String> promptForOptionWithArrows(
       }
       updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
     } else if (key.controlChar == ControlCharacter.enter) {
+      // Show cursor after selection is complete
+      console.showCursor();
+
       if (allowMultiple) {
         return selectedIndices.map((index) => options[index]).toList();
       } else {
