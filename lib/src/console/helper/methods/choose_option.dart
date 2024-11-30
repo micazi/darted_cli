@@ -7,67 +7,74 @@ List<String> promptForOptionWithArrows(
   bool allowMultiple = false,
 }) {
   //
+  // Clear screen and display the message
   console.clearScreen();
-  console.resetCursorPosition();
   console.writeLine(message);
-  console.writeLine('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.');
-  console.writeLine('');
+  console.writeLine('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
 
   int currentSelection = 0;
-  final selectedIndices = <int>{}; // Tracks indices of selected options
+  final selectedIndices = <int>{}; // To track selected options in multi-select
 
-  // Initial rendering of options
-  for (var i = 0; i < options.length; i++) {
-    _renderOption(i, options[i], selected: selectedIndices.contains(i), highlight: i == currentSelection);
+  void renderOptions() {
+    for (int i = 0; i < options.length; i++) {
+      console.cursorPosition = Coordinate(i + 3, 0); // Adjust position for options
+      if (i == currentSelection) {
+        // Highlight current selection
+        console.setForegroundColor(ConsoleColor.white);
+        console.setBackgroundColor(ConsoleColor.blue);
+      } else {
+        // Normal option
+        console.resetColorAttributes();
+      }
+
+      final isSelected = selectedIndices.contains(i);
+      console.writeLine('${isSelected ? "[x]" : "[ ]"} ${options[i]}');
+    }
+    console.resetColorAttributes(); // Reset after rendering
   }
 
+  void updateOption(int index, bool highlight, bool selected) {
+    console.cursorPosition = Coordinate(index + 3, 0); // Adjust for options
+    if (highlight) {
+      console.setForegroundColor(ConsoleColor.white);
+      console.setBackgroundColor(ConsoleColor.blue);
+    } else {
+      console.resetColorAttributes();
+    }
+    console.writeLine('${selected ? "[x]" : "[ ]"} ${options[index]}');
+    console.resetColorAttributes();
+  }
+
+  // Initial render
+  renderOptions();
+
   while (true) {
-    // Wait for user input
     final key = console.readKey();
 
-    int previousSelection = currentSelection;
-
     if (key.controlChar == ControlCharacter.arrowUp) {
+      final previousSelection = currentSelection;
       currentSelection = (currentSelection - 1) % options.length;
       if (currentSelection < 0) currentSelection += options.length; // Wrap around
+      updateOption(previousSelection, false, selectedIndices.contains(previousSelection));
+      updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
     } else if (key.controlChar == ControlCharacter.arrowDown) {
+      final previousSelection = currentSelection;
       currentSelection = (currentSelection + 1) % options.length;
+      updateOption(previousSelection, false, selectedIndices.contains(previousSelection));
+      updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
     } else if (allowMultiple && key.char == ' ') {
-      // Toggle selection for multi-select
       if (selectedIndices.contains(currentSelection)) {
         selectedIndices.remove(currentSelection);
       } else {
         selectedIndices.add(currentSelection);
       }
-      _renderOption(currentSelection, options[currentSelection], selected: selectedIndices.contains(currentSelection), highlight: true);
+      updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
     } else if (key.controlChar == ControlCharacter.enter) {
       if (allowMultiple) {
-        // For multi-select, return all selected options
         return selectedIndices.map((index) => options[index]).toList();
       } else {
-        // For single-select, return the currently selected option
         return [options[currentSelection]];
       }
     }
-
-    // Update only the previous and current selections
-    if (previousSelection != currentSelection) {
-      _renderOption(previousSelection, options[previousSelection], selected: selectedIndices.contains(previousSelection), highlight: false);
-      _renderOption(currentSelection, options[currentSelection], selected: selectedIndices.contains(currentSelection), highlight: true);
-    }
-  }
-}
-
-/// Renders a single option at the current cursor position.
-void _renderOption(int index, String option, {required bool selected, required bool highlight}) {
-  console.cursorPosition = Coordinate((console.cursorPosition?.row ?? 0) - index, 0);
-  if (highlight) {
-    console.setForegroundColor(ConsoleColor.white);
-    console.setBackgroundColor(ConsoleColor.blue);
-  }
-  console.write(selected ? '[x] ' : '[ ] ');
-  console.writeLine(option);
-  if (highlight) {
-    console.resetColorAttributes();
   }
 }
