@@ -1,5 +1,7 @@
 import 'package:dart_console/dart_console.dart';
 
+import '../../../../console_helper.dart';
+
 final console = Console();
 List<String> promptForOptionWithArrows(
   String message,
@@ -9,9 +11,11 @@ List<String> promptForOptionWithArrows(
   //
   // Clear screen and display the message
   // Clear screen and display the message
-  console.clearScreen();
-  console.writeLine(message);
-  console.writeLine('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
+  ConsoleHelper.clear();
+  // console.clearScreen();
+  ConsoleHelper.write(message);
+  // console.writeLine(message);
+  ConsoleHelper.write('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
 
   int currentSelection = 0;
   final selectedIndices = <int>{}; // To track selected options in multi-select
@@ -26,7 +30,7 @@ List<String> promptForOptionWithArrows(
       final indicator = isHighlighted ? '→' : ' '; // Arrow for current option
       final checkbox = isSelected ? '[x]' : '[ ]'; // Checkbox for selection
 
-      console.writeLine('$indicator $checkbox ${options[i]}');
+      ConsoleHelper.write('$indicator $checkbox ${options[i]}');
     }
   }
 
@@ -36,7 +40,7 @@ List<String> promptForOptionWithArrows(
     final indicator = highlight ? '→' : ' ';
     final checkbox = selected ? '[x]' : '[ ]';
 
-    console.writeLine('$indicator $checkbox ${options[index]}');
+    ConsoleHelper.write('$indicator $checkbox ${options[index]}');
   }
 
   // Initial render

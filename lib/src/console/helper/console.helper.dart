@@ -67,7 +67,7 @@ class ConsoleHelper {
   /// Exit the console session.
   static void exit(int code, {bool withNewLine = true, bool withClearing = false}) => exitImpl(code, withNewLine: withNewLine, withClearing: withClearing);
 
-  static void chooseOption(
+  static List<String> chooseOption(
     String message,
     List<String> options, {
     bool allowMultiple = false,
