@@ -108,6 +108,9 @@ List<int> chooseImpl(String title, List<String> options, {bool multiSelect = fal
     }
   }
 
+  // Hide cursor
+  stdout.write('\x1B[?25l');
+
   // Listen for user input
   stdin.echoMode = false;
   stdin.lineMode = false;
@@ -130,6 +133,8 @@ List<int> chooseImpl(String title, List<String> options, {bool multiSelect = fal
   }
 
   void cleanup() {
+    // Restore cursor and terminal settings
+    stdout.write('\x1B[?25h');
     stdin.echoMode = true;
     stdin.lineMode = true;
   }
@@ -149,7 +154,8 @@ List<int> chooseImpl(String title, List<String> options, {bool multiSelect = fal
       case 32: // Spacebar
         toggleSelect();
         break;
-      case 13: // Enter
+      case 13: // Enter (carriage return)
+      case 10: // Enter (newline)
         cleanup();
         stdout.writeln();
         return List<int>.generate(options.length, (i) => selected[i] ? i : -1).where((index) => index != -1).toList();
