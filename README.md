@@ -93,7 +93,36 @@ final List<DartedCommand> commandsTree = [
           '${'This command is ' 'create'.withColor(ConsoleColor.green)} I have the arguments: $arguments, and the flags: $flags',
         ),
         subCommands: [
-          DartedCommand(name: 'a_sub_command', callback: (arguments, flags) {}, helperDescription: "A sub command for create.."),
+          DartedCommand(name: 'a_sub_command',
+          helperDescription: "A sub command for create..",
+          callback: (arguments, flags) {
+            // With the console helper you could:
+            // - Get an user input?
+            ConsoleHelper.getUserInput(
+                promptBuilder: (def, secToTimeout) => 'Give me your name!');
+            // - Confirm an user's action?
+            ConsoleHelper.confirm(
+                prompt: 'Are you absolutely sure??',
+                acceptedAffirmatives: ['Yea']);
+            // - Execute a command?
+            ConsoleHelper.executeCommand('flutter doctor -v');
+            // - Load a task interactively?
+            ConsoleHelper.loadWithTask(
+                task: 'doing something...',
+                process: () async =>
+                    await Future.delayed(const Duration(seconds: 4)));
+            // - **NEW in 0.1.11** Prompt the user to select an option interactively?
+            List<int> theGottenChoices = ConsoleHelper.chooseOption(
+              'Choose an option',
+              ['Option 1', 'Option 2', 'Option 3'],
+              isMultiSelect: true,
+              unselectedIndicator: "[]",
+              selectedIndicator: "[x]",
+              selectionIndicator: "->",
+            );
+            ConsoleHelper.write('Got the choices: $theGottenChoices');
+          },
+          ),
         ],
       ),
       DartedCommand(name: 'another_command', callback: (arguments, flags) {}, helperDescription: "Another top level command...")
@@ -201,9 +230,9 @@ darted_cli is designed with developers in mind, offering:
 
 #### Why Choose darted_cli?
 
-**Save Time**: No need to reimplement parsing logic or validation checks.
-**Focus on Logic**: Concentrate on the functionality of your CLI application.
-**Reliable Framework**: Built to handle both simple and complex CLI needs.
+- **Save Time**: No need to reimplement parsing logic or validation checks.
+- **Focus on Logic**: Concentrate on the functionality of your CLI application.
+- **Reliable Framework**: Built to handle both simple and complex CLI needs.
 
 ## Featurs and Requests
 
