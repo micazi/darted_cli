@@ -72,5 +72,5 @@ class ConsoleHelper {
     List<String> options, {
     bool allowMultiple = false,
   }) =>
-      promptForOptionWithArrows(message, options, allowMultiple: allowMultiple);
+      TerminalHelper.chooseImpl(message, options, allowMultiple: allowMultiple);
 }
