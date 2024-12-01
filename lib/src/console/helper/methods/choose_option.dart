@@ -20,7 +20,8 @@ List<int> chooseImpl(
   stdin.lineMode = false;
 
   // Draw the menu initially.
-  drawMenu(prompt, options, selected, currentIndex, selectedIndicator, unselectedIndicator, selectionIndicator);
+  drawMenu(prompt, options, selected, currentIndex, selectedIndicator,
+      unselectedIndicator, selectionIndicator);
 
   // Loop through, listen for changes, and rebuild.
   while (true) {
@@ -51,11 +52,14 @@ List<int> chooseImpl(
         stdout.writeln();
 
         // Return the selections..
-        return List<int>.generate(options.length, (i) => selected[i] ? i : -1).where((index) => index != -1).toList();
+        return List<int>.generate(options.length, (i) => selected[i] ? i : -1)
+            .where((index) => index != -1)
+            .toList();
     }
 
     // Redraw the menu.
-    drawMenu(prompt, options, selected, currentIndex, selectedIndicator, unselectedIndicator, selectionIndicator);
+    drawMenu(prompt, options, selected, currentIndex, selectedIndicator,
+        unselectedIndicator, selectionIndicator);
   }
 }
 
@@ -70,7 +74,8 @@ int moveDown(int currentIndex, List<String> options) {
 }
 
 // Retuns the new selected options after manipulating the toggling effect.
-List<bool> toggleSelect(List<bool> selected, int currentIndex, List<String> options, bool isMultiSelect) {
+List<bool> toggleSelect(List<bool> selected, int currentIndex,
+    List<String> options, bool isMultiSelect) {
   if (isMultiSelect) {
     selected[currentIndex] = !selected[currentIndex];
     return selected;
@@ -89,7 +94,14 @@ void cleanup() {
   stdin.lineMode = true;
 }
 
-void drawMenu(String prompt, List<String> options, List<bool> selected, int currentIndex, String selectedIndicator, String unselectedIndicator, String selectionIndicator) {
+void drawMenu(
+    String prompt,
+    List<String> options,
+    List<bool> selected,
+    int currentIndex,
+    String selectedIndicator,
+    String unselectedIndicator,
+    String selectionIndicator) {
   // Clear the terminal
   stdout.write("\x1B[2J\x1B[H");
 
@@ -99,7 +111,9 @@ void drawMenu(String prompt, List<String> options, List<bool> selected, int curr
   // Display options
   for (int i = 0; i < options.length; i++) {
     final indicator = selected[i] ? selectedIndicator : unselectedIndicator;
-    final pointer = i == currentIndex ? selectionIndicator : List.generate(selectionIndicator.length, (x) => ' ').join();
+    final pointer = i == currentIndex
+        ? selectionIndicator
+        : List.generate(selectionIndicator.length, (x) => ' ').join();
     stdout.writeln('$pointer $indicator ${options[i]}');
   }
 }

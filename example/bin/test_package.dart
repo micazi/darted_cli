@@ -50,7 +50,33 @@ final List<DartedCommand> commandsTree = [
     subCommands: [
       DartedCommand(
           name: 'a_sub_command',
-          callback: (arguments, flags) {},
+          callback: (arguments, flags) {
+            // With the console helper you could:
+            // - Get an user input?
+            ConsoleHelper.getUserInput(
+                promptBuilder: (def, secToTimeout) => 'Give me your name!');
+            // - Confirm an user's action?
+            ConsoleHelper.confirm(
+                prompt: 'Are you absolutely sure??',
+                acceptedAffirmatives: ['Yea']);
+            // - Execute a command?
+            ConsoleHelper.executeCommand('flutter doctor -v');
+            // - Load a task interactively?
+            ConsoleHelper.loadWithTask(
+                task: 'doing something...',
+                process: () async =>
+                    await Future.delayed(const Duration(seconds: 4)));
+            // - **NEW in 0.1.11** Prompt the user to select an option interactively?
+            List<int> theGottenChoices = ConsoleHelper.chooseOption(
+              'Choose an option',
+              ['Option 1', 'Option 2', 'Option 3'],
+              isMultiSelect: true,
+              unselectedIndicator: "[]",
+              selectedIndicator: "[x]",
+              selectionIndicator: "->",
+            );
+            ConsoleHelper.write('Got the choices: $theGottenChoices');
+          },
           helperDescription: "A sub command for create.."),
     ],
   ),
