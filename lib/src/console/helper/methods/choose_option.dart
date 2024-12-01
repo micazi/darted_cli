@@ -99,7 +99,7 @@ void drawMenu(String prompt, List<String> options, List<bool> selected, int curr
   // Display options
   for (int i = 0; i < options.length; i++) {
     final indicator = selected[i] ? selectedIndicator : unselectedIndicator;
-    final pointer = i == currentIndex ? selectionIndicator : List.generate(selectionIndicator.length, (x) => ' ');
+    final pointer = i == currentIndex ? selectionIndicator : List.generate(selectionIndicator.length, (x) => ' ').join();
     stdout.writeln('$pointer $indicator ${options[i]}');
   }
 }
