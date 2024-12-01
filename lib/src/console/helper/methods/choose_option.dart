@@ -81,100 +81,79 @@
 
 import 'dart:io';
 
-class TerminalHelper {
-  /// Prompts the user to choose an option using arrow keys with an arrow indicator.
-  /// [allowMultiple]: If true, allows selecting multiple options.
-  /// Returns a list of selected options.
-  static List<String> chooseImpl(
-    String message,
-    List<String> options, {
-    bool allowMultiple = false,
-  }) {
-    // Hide the cursor
-    stdout.write('\x1B[?25l');
+bool _isMultiSelect = false;
 
-    // Print the message
-    stdout.writeln(message);
-    stdout.writeln('Use ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
+/// Renders a selectable menu in the terminal.
+/// - [title]: The menu title to display.
+/// - [options]: List of options for the user to select.
+/// - [multiSelect]: Allow selecting multiple options.
+List<int> chooseImpl(String title, List<String> options, {bool multiSelect = false}) {
+  _isMultiSelect = multiSelect;
+  final selected = List.generate(options.length, (_) => false);
+  int currentIndex = 0;
 
-    int currentSelection = 0;
-    final selectedIndices = <int>{};
+  void drawMenu() {
+    // Clear the terminal
+    stdout.write("\x1B[2J\x1B[H");
 
-    void renderOptions() {
-      for (int i = 0; i < options.length; i++) {
-        final isSelected = selectedIndices.contains(i);
-        final isHighlighted = i == currentSelection;
+    // Display title
+    stdout.writeln(title);
+    stdout.writeln('\nUse ↑/↓ arrows to navigate, Space to select, and Enter to confirm.\n');
 
-        final indicator = isHighlighted ? '→' : ' ';
-        final checkbox = isSelected ? '[x]' : '[ ]';
-
-        stdout.write('\x1B[2K'); // Clear the line
-        stdout.writeln('$indicator $checkbox ${options[i]}');
-      }
+    // Display options
+    for (int i = 0; i < options.length; i++) {
+      final indicator = selected[i] ? '[x]' : '[ ]';
+      final pointer = i == currentIndex ? '→' : ' ';
+      stdout.writeln('$pointer $indicator ${options[i]}');
     }
+  }
 
-    void updateOption(int index, bool highlight, bool selected) {
-      stdout.write('\x1B[${index + 3}H'); // Move the cursor to the specific line
-      final indicator = highlight ? '→' : ' ';
-      final checkbox = selected ? '[x]' : '[ ]';
+  // Listen for user input
+  stdin.echoMode = false;
+  stdin.lineMode = false;
 
-      stdout.write('\x1B[2K'); // Clear the line
-      stdout.write('$indicator $checkbox ${options[index]}');
+  void moveUp() {
+    currentIndex = (currentIndex - 1 + options.length) % options.length;
+  }
+
+  void moveDown() {
+    currentIndex = (currentIndex + 1) % options.length;
+  }
+
+  void toggleSelect() {
+    if (_isMultiSelect) {
+      selected[currentIndex] = !selected[currentIndex];
+    } else {
+      selected.fillRange(0, options.length, false);
+      selected[currentIndex] = true;
     }
+  }
 
-    // Save initial cursor position and render options
-    stdout.write('\x1B[s'); // Save cursor position
-    renderOptions();
+  void cleanup() {
+    stdin.echoMode = true;
+    stdin.lineMode = true;
+  }
 
-    // Read user input
-    stdin.echoMode = false;
-    stdin.lineMode = false;
-    while (true) {
-      final key = stdin.readByteSync();
-      if (key == 27) {
-        final nextKey1 = stdin.readByteSync();
-        final nextKey2 = stdin.readByteSync();
+  drawMenu();
+  while (true) {
+    final input = stdin.readByteSync();
 
-        // Arrow keys
-        if (nextKey1 == 91 && nextKey2 == 65) {
-          // Up Arrow
-          final previousSelection = currentSelection;
-          currentSelection = (currentSelection - 1) % options.length;
-          if (currentSelection < 0) currentSelection += options.length; // Wrap around
-          updateOption(previousSelection, false, selectedIndices.contains(previousSelection));
-          updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
-        } else if (nextKey1 == 91 && nextKey2 == 66) {
-          // Down Arrow
-          final previousSelection = currentSelection;
-          currentSelection = (currentSelection + 1) % options.length;
-          updateOption(previousSelection, false, selectedIndices.contains(previousSelection));
-          updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
+    switch (input) {
+      case 27: // Escape sequences
+        if (stdin.readByteSync() == 91) {
+          final arrowKey = stdin.readByteSync();
+          if (arrowKey == 65) moveUp(); // Arrow Up
+          if (arrowKey == 66) moveDown(); // Arrow Down
         }
-      } else if (key == 32 && allowMultiple) {
-        // Space key for selecting/deselecting
-        if (selectedIndices.contains(currentSelection)) {
-          selectedIndices.remove(currentSelection);
-        } else {
-          selectedIndices.add(currentSelection);
-        }
-        updateOption(currentSelection, true, selectedIndices.contains(currentSelection));
-      } else if (key == 10) {
-        // Enter key to confirm
-        stdin.echoMode = true;
-        stdin.lineMode = true;
-
-        // Show the cursor
-        stdout.write('\x1B[?25h');
-
-        stdout.write('\x1B[u'); // Restore cursor position
-        stdout.write('\x1B[J'); // Clear from cursor to end of screen
-
-        if (allowMultiple) {
-          return selectedIndices.map((index) => options[index]).toList();
-        } else {
-          return [options[currentSelection]];
-        }
-      }
+        break;
+      case 32: // Spacebar
+        toggleSelect();
+        break;
+      case 13: // Enter
+        cleanup();
+        stdout.writeln();
+        return List<int>.generate(options.length, (i) => selected[i] ? i : -1).where((index) => index != -1).toList();
     }
+    drawMenu();
   }
 }

@@ -67,10 +67,10 @@ class ConsoleHelper {
   /// Exit the console session.
   static void exit(int code, {bool withNewLine = true, bool withClearing = false}) => exitImpl(code, withNewLine: withNewLine, withClearing: withClearing);
 
-  static List<String> chooseOption(
+  static List<int> chooseOption(
     String message,
     List<String> options, {
     bool allowMultiple = false,
   }) =>
-      TerminalHelper.chooseImpl(message, options, allowMultiple: allowMultiple);
+      chooseImpl(message, options, multiSelect: allowMultiple);
 }
