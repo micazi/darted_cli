@@ -1,6 +1,6 @@
+import 'dart:io';
 import '../models/console_models.exports.dart';
 import 'methods/methods.exports.dart';
-//
 
 class ConsoleHelper {
   /// Ask for user input asynchronously, You can add a timeout period and a default value (When the timeout runs or when he enters an empty value).
@@ -61,6 +61,9 @@ class ConsoleHelper {
   /// Clear the console's window and reset the cursor to the top left.
   static void clear() => clearImpl();
 
+  /// Hide the cursor.
+  void hideCursor() => stdout.write('\x1B[?25l');
+
   /// Execute a terminal command (Return the output if exists).
   static Future<dynamic> executeCommand(String command) async => await executeCommandImpl(command);
 
@@ -68,9 +71,19 @@ class ConsoleHelper {
   static void exit(int code, {bool withNewLine = true, bool withClearing = false}) => exitImpl(code, withNewLine: withNewLine, withClearing: withClearing);
 
   static List<int> chooseOption(
-    String message,
+    String prompt,
     List<String> options, {
-    bool allowMultiple = false,
+    bool isMultiSelect = false,
+    String selectedIndicator = "[x]",
+    String unselectedIndicator = "[ ]",
+    String selectionIndicator = "->",
   }) =>
-      chooseImpl(message, options, multiSelect: allowMultiple);
+      chooseImpl(
+        prompt,
+        options,
+        isMultiSelect: isMultiSelect,
+        selectedIndicator: selectedIndicator,
+        unselectedIndicator: unselectedIndicator,
+        selectionIndicator: selectionIndicator,
+      );
 }
