@@ -25,8 +25,6 @@ extension DartedStyleExtension on String {
             .padRight(stdout.terminalColumns);
       case ConsoleTextAlignment.right:
         return padLeft(stdout.terminalColumns);
-      default:
-        return this;
     }
   }
 }

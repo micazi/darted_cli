@@ -27,13 +27,6 @@ extension ConsoleLoaderExtension on ConsoleLoader {
             animationColor: animationColor!,
             speed: animationSpeed!,
             animationPosition: animationPosition!);
-      //
-      default:
-        return SpinnerLoader(
-            task: task,
-            animationColor: animationColor!,
-            speed: animationSpeed!,
-            animationPosition: animationPosition!);
     }
   }
 }

@@ -10,3 +10,4 @@
 - **[0.1.9]** - Added 'executeCommand' to the console helper.
 - **[0.1.10]** - Some minor fixes.
 - **[0.1.11]** - Added 'chooseOption' method that Prompts the user to choose an option (Single/Multi).
+- **[0.1.12]** - Static Analysis Updates.
