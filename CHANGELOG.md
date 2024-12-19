@@ -11,3 +11,4 @@
 - **[0.1.10]** - Some minor fixes.
 - **[0.1.11]** - Added 'chooseOption' method that Prompts the user to choose an option (Single/Multi).
 - **[0.1.12]** - Static Analysis Updates.
+- **[0.1.13]** - Updated the searchFiles method to include the matches' starting position to make it easier to manipulate + Added 'allowed' parameter for it to search only certain files based on a RegExp pattern.

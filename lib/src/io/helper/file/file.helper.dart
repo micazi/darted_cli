@@ -26,22 +26,40 @@ class FileHelper {
           ignoreHidden: ignoreHidden);
 
   /// Search through all the files for a RegExp pattern.
-  Future<Map<String, List<(int matchLine, String lineContent)>>> search(
-          String rootPath, RegExp pattern,
-          {bool ignoreHidden = true, List<RegExp> excluded = const []}) async =>
+  Future<
+      Map<
+          String,
+          List<
+              (
+                int matchLine,
+                String lineContent,
+                Map<int, String> matchPositions
+              )>>> search(String rootPath, RegExp pattern,
+          {bool ignoreHidden = true,
+          List<RegExp> excluded = const [],
+          List<RegExp> allowed = const []}) async =>
       await searchFilesContent(rootPath.replaceSeparator(), pattern,
-          ignoreHidden: ignoreHidden, excluded: excluded);
+          ignoreHidden: ignoreHidden, excluded: excluded, only: allowed);
 
-  /// Search the content of files in a root path for a RegExp pattern.
-  Future<Map<String, List<(int matchLine, String lineContent)>>>
-      searchAndReplace(String rootPath, RegExp pattern,
-              {bool ignoreHidden = true,
-              List<RegExp> excluded = const [],
-              String? replacement}) async =>
-          await searchFilesContent(rootPath.replaceSeparator(), pattern,
-              ignoreHidden: ignoreHidden,
-              excluded: excluded,
-              replacement: replacement);
+  /// Search the content of files in a root path for a RegExp pattern and replace it.
+  Future<
+      Map<
+          String,
+          List<
+              (
+                int matchLine,
+                String lineContent,
+                Map<int, String> matchPositions
+              )>>> searchAndReplace(String rootPath, RegExp pattern,
+          {bool ignoreHidden = true,
+          List<RegExp> excluded = const [],
+          List<RegExp> allowed = const [],
+          String? replacement}) async =>
+      await searchFilesContent(rootPath.replaceSeparator(), pattern,
+          ignoreHidden: ignoreHidden,
+          excluded: excluded,
+          only: allowed,
+          replacement: replacement);
 
   /// Creates a file at the specified path (The file's name is the last is that path).
   Future<File> create(String path, {bool createFoldersInPath = true}) async =>
