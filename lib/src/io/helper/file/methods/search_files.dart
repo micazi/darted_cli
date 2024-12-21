@@ -50,26 +50,27 @@ Future<
           // Read the entire file as a single string
           final content = await entity.readAsString();
 
-          // Encode the content to handle placeholders
-          final encodedContent = encodeString(content);
-
-          // Match the regex against the encoded content
-          final matchesInFile = query.allMatches(encodedContent);
+          // Match the regex against the original content
+          final matchesInFile = query.allMatches(content);
           final lineMatches =
               <int, (String lineContent, Map<int, String> matchPositions)>{};
 
           for (final match in matchesInFile) {
-            // Decode the match to restore the original content
-            final matchedText = decodeString(match.group(0)!, content);
+            final matchedText = match.group(0)!;
 
             // Determine the line number and match position
             final matchStart = match.start;
             final lineNumber =
                 content.substring(0, matchStart).split('\n').length;
-            final lineContent = content.split('\n')[lineNumber - 1];
-            final relativePosition = matchStart -
-                content.substring(0, matchStart).lastIndexOf('\n') -
-                1;
+            final lineStartIndex =
+                content.lastIndexOf('\n', matchStart - 1) + 1;
+            final lineContent = content.substring(
+                lineStartIndex,
+                content.indexOf('\n', lineStartIndex) == -1
+                    ? content.length
+                    : content.indexOf('\n', lineStartIndex));
+
+            final relativePosition = matchStart - lineStartIndex;
 
             // If the line already exists, merge matches
             if (lineMatches.containsKey(lineNumber)) {
@@ -89,13 +90,11 @@ Future<
 
           // Handle replacement if specified
           if (replacement != null) {
-            final updatedContent =
-                encodedContent.replaceAll(query, replacement);
-            final decodedContent = decodeString(updatedContent, content);
+            final updatedContent = content.replaceAll(query, replacement);
 
             // Write updated content back to the file only if changes were made
-            if (decodedContent != content) {
-              await entity.writeAsString(decodedContent);
+            if (updatedContent != content) {
+              await entity.writeAsString(updatedContent);
             }
           }
         } catch (e) {
@@ -108,23 +107,4 @@ Future<
   }
 
   return matches;
-}
-
-String encodeString(String input) {
-  return input.replaceAllMapped(
-    RegExp(r'\$\{[^}]*\}'),
-    (match) =>
-        '__PLACEHOLDER__${match.start}__', // Replace embedded expressions with placeholders
-  );
-}
-
-String decodeString(String encoded, String original) {
-  return encoded.replaceAllMapped(
-    RegExp(r'__PLACEHOLDER__(\d+)__'),
-    (match) {
-      final start = int.parse(match.group(1)!);
-      final end = original.indexOf('}', start) + 1;
-      return original.substring(start, end);
-    },
-  );
 }
