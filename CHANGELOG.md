@@ -14,3 +14,4 @@
 - **[0.1.13]** - Updated the searchFiles method to include the matches' starting position to make it easier to manipulate + Added 'allowed' parameter for it to search only certain files based on a RegExp pattern.
 - **[0.1.14]** - Fix in the searchFiles function for incorrect position matches.
 - **[0.1.15]** - Fix in the searchFiles function for incorrect line content indentations.
+- **[0.1.16]** - Updated dependancies & Added `allowed` and `excluded` parameters in the ListAll functions.

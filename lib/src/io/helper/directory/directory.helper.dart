@@ -15,9 +15,18 @@ class DirectoryHelper {
       await directoryExists(path.replaceSeparator());
 
   /// List all the directories in this root directory.
-  Future<List<Directory>> listAll(String rootPath,
-          {bool includeHidden = false}) async =>
-      await listAllImpl(rootPath, includeHidden: includeHidden);
+  Future<List<Directory>> listAll(
+    String rootPath, {
+    bool includeHidden = false,
+    List<RegExp>? excluded,
+    List<RegExp>? allowed,
+  }) async =>
+      await listAllImpl(
+        rootPath,
+        includeHidden: includeHidden,
+        excluded: excluded,
+        allowed: allowed,
+      );
 
   /// Search for a directory by it's name.
   Future<List<String>> find(String rootPath, String name,

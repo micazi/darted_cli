@@ -9,9 +9,18 @@ class FileHelper {
       await fileExists(path.replaceSeparator());
 
   /// List all the files in this root directory.
-  Future<List<File>> listAll(String rootPath,
-          {bool includeHidden = false}) async =>
-      await listAllImpl(rootPath, includeHidden: includeHidden);
+  Future<List<File>> listAll(
+    String rootPath, {
+    bool includeHidden = false,
+    List<RegExp>? excluded,
+    List<RegExp>? allowed,
+  }) async =>
+      await listAllImpl(
+        rootPath,
+        includeHidden: includeHidden,
+        excluded: excluded,
+        allowed: allowed,
+      );
 
   /// Search for a file bu it's name.
   Future<List<String>> find(String rootPath, String name,
@@ -39,7 +48,7 @@ class FileHelper {
           List<RegExp> excluded = const [],
           List<RegExp> allowed = const []}) async =>
       await searchFilesContent(rootPath.replaceSeparator(), pattern,
-          ignoreHidden: ignoreHidden, excluded: excluded, only: allowed);
+          ignoreHidden: ignoreHidden, excluded: excluded, allowed: allowed);
 
   /// Search the content of files in a root path for a RegExp pattern and replace it.
   Future<
@@ -58,7 +67,7 @@ class FileHelper {
       await searchFilesContent(rootPath.replaceSeparator(), pattern,
           ignoreHidden: ignoreHidden,
           excluded: excluded,
-          only: allowed,
+          allowed: allowed,
           replacement: replacement);
 
   /// Creates a file at the specified path (The file's name is the last is that path).

@@ -15,7 +15,7 @@ Future<
   RegExp query, {
   bool ignoreHidden = true,
   List<RegExp>? excluded,
-  List<RegExp>? only,
+  List<RegExp>? allowed,
   String? replacement,
 }) async {
   final matches = <String,
@@ -38,10 +38,10 @@ Future<
         continue;
       }
 
-      // Check if the entity is allowed by "only" patterns
-      if (only != null &&
-          only.isNotEmpty &&
-          only.every((pattern) => !pattern.hasMatch(name))) {
+      // Check if the entity is allowed by "allowed" patterns
+      if (allowed != null &&
+          allowed.isNotEmpty &&
+          allowed.every((pattern) => !pattern.hasMatch(name))) {
         continue;
       }
 
