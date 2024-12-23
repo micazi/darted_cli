@@ -62,14 +62,17 @@ Future<
             final matchStart = match.start;
             final lineNumber =
                 content.substring(0, matchStart).split('\n').length;
+
+            // Calculate the start and end indices of the line in the full content
             final lineStartIndex =
                 content.lastIndexOf('\n', matchStart - 1) + 1;
+            final lineEndIndex = content.indexOf('\n', lineStartIndex);
             final lineContent = content.substring(
-                lineStartIndex,
-                content.indexOf('\n', lineStartIndex) == -1
-                    ? content.length
-                    : content.indexOf('\n', lineStartIndex));
+              lineStartIndex,
+              lineEndIndex == -1 ? content.length : lineEndIndex,
+            );
 
+            // Calculate the match position relative to the full line content
             final relativePosition = matchStart - lineStartIndex;
 
             // If the line already exists, merge matches
@@ -77,7 +80,7 @@ Future<
               lineMatches[lineNumber]?.$2[relativePosition] = matchedText;
             } else {
               lineMatches[lineNumber] =
-                  (lineContent.trim(), {relativePosition: matchedText});
+                  (lineContent, {relativePosition: matchedText});
             }
           }
 
