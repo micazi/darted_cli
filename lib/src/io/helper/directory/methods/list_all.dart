@@ -17,6 +17,9 @@ Future<List<Directory>> listAllImpl(
     // get the directories
     final List<Directory> dirs = entities.whereType<Directory>().toList();
 
+    // Create a list to hold directories to remove
+    final List<Directory> dirsToRemove = [];
+
     for (var directory in dirs) {
       String name = directory.uri.pathSegments.last;
 
@@ -24,16 +27,18 @@ Future<List<Directory>> listAllImpl(
       if (excluded != null &&
           excluded.isNotEmpty &&
           excluded.any((pattern) => pattern.hasMatch(name))) {
-        dirs.remove(directory);
+        dirsToRemove.add(directory);
       }
 
       // Check if the directory is allowed by "allowed" patterns
       if (allowed != null &&
           allowed.isNotEmpty &&
           allowed.every((pattern) => !pattern.hasMatch(name))) {
-        dirs.remove(directory);
+        dirsToRemove.add(directory);
       }
     }
+    // Remove directories that match any exclusion criteria
+    dirs.removeWhere((directory) => dirsToRemove.contains(directory));
 
     if (!includeHidden) {
       dirs.removeWhere(

@@ -22,6 +22,7 @@ final List<DartedCommand> commandsTree = [
       // You also have the option to allow an argument to have multible options, with input validation based on the accepted options YOU enter!
       DartedArgument(
           name: 'platforms',
+          describtion: 'the platforms to allow in creation',
           abbreviation: 'p',
           acceptedMultiOptionValues: 'android,ios,web',
           isMultiOption: true,
@@ -35,6 +36,7 @@ final List<DartedCommand> commandsTree = [
       DartedFlag(
           name: 'package',
           abbreviation: 'pa',
+          describtion: 'the helper for the flag.',
           canBeNegated: false,
           appliedByDefault: true),
       DartedFlag(

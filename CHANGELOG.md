@@ -15,3 +15,4 @@
 - **[0.1.14]** - Fix in the searchFiles function for incorrect position matches.
 - **[0.1.15]** - Fix in the searchFiles function for incorrect line content indentations.
 - **[0.1.16]** - Updated dependancies & Added `allowed` and `excluded` parameters in the ListAll functions.
+- **[0.1.17]** - Added describtion to `dartedFlag` and `dartedArgument` models.

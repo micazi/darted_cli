@@ -14,8 +14,11 @@ Future<List<File>> listAllImpl(
     // List all entities in the directory
     final entities = await directory.list().toList();
 
-    // get the directories
+    // get the files
     final List<File> files = entities.whereType<File>().toList();
+
+    // Create a list to hold files to remove
+    final List<File> filesToRemove = [];
 
     for (var file in files) {
       String name = file.uri.pathSegments.last;
@@ -24,16 +27,19 @@ Future<List<File>> listAllImpl(
       if (excluded != null &&
           excluded.isNotEmpty &&
           excluded.any((pattern) => pattern.hasMatch(name))) {
-        files.remove(file);
+        filesToRemove.add(file);
       }
 
       // Check if the file is allowed by "allowed" patterns
       if (allowed != null &&
           allowed.isNotEmpty &&
           allowed.every((pattern) => !pattern.hasMatch(name))) {
-        files.remove(file);
+        filesToRemove.add(file);
       }
     }
+
+    // Remove files that match any exclusion criteria
+    files.removeWhere((file) => filesToRemove.contains(file));
 
     if (!includeHidden) {
       files.removeWhere(
