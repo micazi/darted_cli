@@ -8,14 +8,14 @@ Future<void> validateYamlImpl(
 
   // Loop through the map keys to validate.
   schema.fields.forEach((fieldKey, rule) {
-    validateField(fieldKey, rule, config[fieldKey]);
+    _validateField(fieldKey, rule, config[fieldKey]);
   });
 
   // If there were no exceptions, We are valid.
 }
 
 /// Validate the schema field with the supplied rule.
-void validateField(String fieldKey, FieldRule rule, dynamic value) {
+void _validateField(String fieldKey, FieldRule rule, dynamic value) {
   if (rule.required && value == null) {
     throw ("Missing required field: $fieldKey");
   }
@@ -48,7 +48,8 @@ void validateField(String fieldKey, FieldRule rule, dynamic value) {
         }
         if (rule.nestedFields != null) {
           rule.nestedFields!.forEach((nestedKey, nestedRule) {
-            validateField('$fieldKey.$nestedKey', nestedRule, value[nestedKey]);
+            _validateField(
+                '$fieldKey.$nestedKey', nestedRule, value[nestedKey]);
           });
         }
         break;

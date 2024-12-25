@@ -1,4 +1,4 @@
-import 'package:yaml/yaml.dart';
+import 'package:yaml/yaml.dart' show YamlMap;
 import 'src/src.exports.dart';
 //
 export 'package:yaml/yaml.dart';
@@ -12,4 +12,8 @@ class YamlModule {
   static Future<void> validate(
           YamlMap yamlContent, YamlValidationSchema schema) async =>
       await validateYamlImpl(yamlContent, schema);
+
+  /// Validate a yaml file content using a validation schema.
+  static Map<String, dynamic> extractData(YamlMap yamlContent) =>
+      extractDataImpl(yamlContent);
 }

@@ -36,5 +36,8 @@ class PackageLogic {
     } catch (e) {
       print('Validation failed: $e');
     }
+    // --> Starting 0.0.19, Extract your Yaml data!
+    Map<String, dynamic> yamldata = YamlModule.extractData(yamlContent);
+    print('Extracted data: $yamldata');
   }
 }
