@@ -1,10 +1,10 @@
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import '../../console/models/console_models.exports.dart';
 import '../../io/helper/io.helper.dart';
-import 'ascii_art.module.dart';
+import 'src/src.exports.dart';
 import 'dart:io';
 //
-export 'fonts/index.dart';
+export 'src/src.exports.dart';
 
 class AsciiArtModule {
   /// Convert text to Ascii art with customizable fonts. Custom fonts must be a .flf file.
