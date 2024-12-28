@@ -18,12 +18,16 @@ class DirectoryHelper {
   Future<List<Directory>> listAll(
     String rootPath, {
     bool includeHidden = false,
+    bool recurse = false,
+    bool followLinks = false,
     List<RegExp>? excluded,
     List<RegExp>? allowed,
   }) async =>
       await listAllImpl(
         rootPath,
         includeHidden: includeHidden,
+        recurse: recurse,
+        followLinks: followLinks,
         excluded: excluded,
         allowed: allowed,
       );

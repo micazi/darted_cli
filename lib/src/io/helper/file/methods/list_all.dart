@@ -4,6 +4,8 @@ import '../../directory/methods/directory_exists.dart';
 Future<List<File>> listAllImpl(
   String rootPath, {
   bool includeHidden = false,
+  bool recurse = true,
+  bool followLinks = false,
   List<RegExp>? excluded,
   List<RegExp>? allowed,
 }) async {
@@ -11,11 +13,17 @@ Future<List<File>> listAllImpl(
   final directory = Directory(rootPath);
 
   if (await directoryExists(rootPath)) {
-    // List all entities in the directory
-    final entities = await directory.list().toList();
+    // List all entities in the directory recursively
+    final entities =
+        directory.list(recursive: recurse, followLinks: followLinks);
 
-    // get the files
-    final List<File> files = entities.whereType<File>().toList();
+    // Collect all files in the directory
+    final List<File> files = [];
+    await for (var entity in entities) {
+      if (entity is File) {
+        files.add(entity);
+      }
+    }
 
     // Create a list to hold files to remove
     final List<File> filesToRemove = [];
@@ -42,8 +50,8 @@ Future<List<File>> listAllImpl(
     files.removeWhere((file) => filesToRemove.contains(file));
 
     if (!includeHidden) {
-      files.removeWhere(
-          (d) => d.path.split(Platform.pathSeparator).last.startsWith('.'));
+      files.removeWhere((file) =>
+          file.path.split(Platform.pathSeparator).last.startsWith('.'));
     }
 
     return files;
