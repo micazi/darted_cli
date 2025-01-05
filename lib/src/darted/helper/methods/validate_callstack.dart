@@ -1,5 +1,6 @@
 import '../../../console/helper/console.helper.dart';
 import '../../../console/models/console_models.exports.dart';
+import '../../../infrastructure/list.extension.dart';
 import '../../../io/helper/io.helper.dart';
 import '../../../modules/ascii-art/ascii_art.module.dart';
 import '../../../modules/yaml/yaml.module.dart';
@@ -145,17 +146,6 @@ Future<bool> validateCallStackImpl(
     availableCommands = currentNode.subCommands ?? [];
   }
   return true;
-}
-
-extension ListExtension<E> on List<E> {
-  bool containsAll(List<E> otherList) {
-    List<bool> checks = [];
-    //
-    for (E thisElement in otherList) {
-      checks.add(contains(thisElement));
-    }
-    return !checks.contains(false);
-  }
 }
 
 Future<String> defaultEntryHelper(List<DartedCommand> commandsTree) async {

@@ -2,6 +2,7 @@ import 'package:darted_cli/ascii_art_module.dart';
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/darted_cli.dart';
 
+// ignore: avoid_relative_lib_imports
 import '../lib/main.dart';
 
 final List<DartedCommand> commandsTree = [

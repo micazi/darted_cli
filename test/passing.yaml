@@ -1,0 +1,14 @@
+stringField: valid@123
+intField: 42
+boolField: true
+listField:
+  - value1
+  - value2
+mapField:
+  nestedString: valid_nested_string
+  nestedInt: 24
+optionalField: This is an optional field
+directoryPathField: ./test-folder
+filePathField: /Users\micwa\Desktop\Flutter Templates\Mobile\project.yaml
+absoluteDirectoryPathField: C:\Users\micwa\Desktop\Flutter Templates
+absoluteFilePathField: C:\Users\micwa\Desktop\Flutter Templates\Mobile\project.yaml

@@ -19,7 +19,7 @@ class AsciiArtModule {
     File? file;
     if (customFontPath != null) {
       file = File(
-          "${IOHelper.directory.getCurrent()}${Platform.pathSeparator}${customFontPath}");
+          "${IOHelper.directory.getCurrent()}${Platform.pathSeparator}$customFontPath");
     } else {
       final fontFileUri = await font.path;
       if (fontFileUri != null) {

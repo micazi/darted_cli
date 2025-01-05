@@ -1,4 +1,5 @@
 import 'package:yaml/yaml.dart';
+// ignore: implementation_imports
 import 'package:yaml/src/error_listener.dart';
 import '../../../../io_helper.dart';
 
@@ -13,6 +14,6 @@ Future<YamlMap> loadYamlImpl(String path) async {
 class _ErrListener extends ErrorListener {
   @override
   void onError(YamlException error) {
-    throw Exception('Error while parsing YAML file: ${error}');
+    throw Exception('Error while parsing YAML file: $error');
   }
 }
