@@ -19,3 +19,4 @@
 - **[0.1.18]** - Added YAML Validation functionality using a schema, See the example main.dart for usage.
 - **[0.1.19]** - Added YAML Data Extraction functionality into `Map<String,dynamic>`.
 - **[0.1.20]** - Added option to enable recursion in the 'listAll' functions of both files and directories.
+- **[0.1.21]** - New updates to the YAML validation module!
