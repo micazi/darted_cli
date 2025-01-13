@@ -1,8 +1,0 @@
-# stringField: someV@ac
-# intField: notAnInteger
-# boolField: 12
-# listField:
-#   - invalidValue
-# mapField:
-#   nestedString: 1234
-#   nestedInt: notAnInteger

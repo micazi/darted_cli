@@ -30,6 +30,16 @@ class PackageLogic {
             FieldRule(type: YamlValueType.directoryPath, required: true),
         'filePathField':
             FieldRule(type: YamlValueType.filePath, required: true),
+        // --> Starting 0.1.22, You can add in a recursiveMapSchema, This is only relative to YamlValueType.map and would recurse down to every nested Map with key-matching to the rules needed.
+        "structure": FieldRule(
+          type: YamlValueType.map,
+          recursiveMapSchema: {
+            RegExp(r'^.*\.dart$'):
+                FieldRule(type: YamlValueType.filePath, required: false),
+            RegExp(r'^someRecursiveTitleNo\.\\d+$'):
+                FieldRule(type: YamlValueType.string, required: true),
+          },
+        )
       },
     );
     //2. Load the yaml file.
