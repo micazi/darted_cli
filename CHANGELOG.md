@@ -97,3 +97,7 @@
 
 **FIX**: Copy methods for both files and directories not working.
 **DOC**: Updated License file for 2025.
+
+## 0.1.24
+
+**FEAT**: Added DartToYaml Converter to revert back the extraction process.

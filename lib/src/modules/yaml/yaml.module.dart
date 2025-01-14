@@ -13,7 +13,11 @@ class YamlModule {
           {String? yamlFilePath}) async =>
       await validateYamlImpl(yamlContent, schema, yamlFilePath: yamlFilePath);
 
-  /// Validate a yaml file content using a validation schema.
+  /// Extract yaml content to a dart-native Map\<String,dynamic\>
   static Map<String, dynamic> extractData(YamlMap yamlContent) =>
       extractDataImpl(yamlContent);
+
+  /// Convert a Map\<String,dynamic\> into an indented, correct, Yaml String.
+  static String convertDartToYaml(Map<String, dynamic> map) =>
+      convertDartToYamlImpl(map);
 }
