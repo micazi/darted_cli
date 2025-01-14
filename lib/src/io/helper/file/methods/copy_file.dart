@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import '../../../../../io_helper.dart';
 
 Future<void> copyImpl(String filePath, String destinationFilePath,
     {bool createDestination = true}) async {
   // Ensure the source file exists
-  if (!await IOHelper.file.exists(filePath)) {
+  if (!await File(filePath).exists()) {
     throw FileDoesntExist(path: filePath);
   }
 
@@ -19,19 +17,11 @@ Future<void> copyImpl(String filePath, String destinationFilePath,
     }
   }
 
-  // Determine the shell command based on the operating system
-  String command;
-  if (Platform.isWindows) {
-    // Windows command
-    command = 'copy "$filePath" "$destinationFilePath"';
-  } else {
-    // Unix-based systems command
-    command = 'cp "$filePath" "$destinationFilePath"';
+  // Use Dart's File class to copy the file
+  try {
+    await File(filePath).copy(destinationFilePath);
+  } catch (e) {
+    // Handle any errors that occur during the copy operation
+    throw ('Error copying file: $e');
   }
-
-  // Execute the command
-  await Process.run(
-    Platform.isWindows ? 'cmd' : 'bash',
-    Platform.isWindows ? ['/c', command] : ['-c', command],
-  );
 }

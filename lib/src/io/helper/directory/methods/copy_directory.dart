@@ -1,38 +1,47 @@
-import 'dart:io';
-
 import '../../../../../io_helper.dart';
 
-Future<void> copyImpl(String directoryPath, String toPath) async {
+Future<void> copyImpl(String directoryPath, String toPath,
+    {bool createDestination = true}) async {
   final source = Directory(directoryPath);
   final destination = Directory(toPath);
 
-  // Assert that the source path exists
+  // Ensure the source directory exists
   if (!await source.exists()) {
     throw DirectoryDoesntExist(path: source.path);
   }
 
-  // Ensure destination directory exists
+  // Ensure the destination directory exists
   if (!await destination.exists()) {
-    await destination.create(recursive: true);
+    if (createDestination) {
+      await destination.create(recursive: true);
+    } else {
+      throw DirectoryDoesntExist(path: destination.path);
+    }
   }
 
-  // Execute the shell command
-  if (Platform.isWindows) {
-    // Windows: Use `xcopy` command
-    await Process.run('xcopy', [
-      directoryPath,
-      toPath,
-      '/E', // Copies all subdirectories, even if empty
-      '/I', // Assumes the destination is a directory
-      '/Q', // Quiet mode, suppresses output
-      '/Y', // Suppresses prompt to confirm overwriting
-    ]);
-  } else {
-    // Unix-based systems: Use `cp` command
-    await Process.run('cp', [
-      '-r', // Recursive copy
-      directoryPath,
-      toPath,
-    ]);
+  // Recursively copy the directory
+  await _copyDirectory(source, destination);
+}
+
+Future<void> _copyDirectory(Directory source, Directory destination) async {
+  try {
+    // List all entities (files and subdirectories) in the source directory
+    final entities = source.list(recursive: false);
+
+    await for (final entity in entities) {
+      final newPath = entity.path.replaceFirst(source.path, destination.path);
+
+      if (entity is File) {
+        // Copy the file
+        await entity.copy(newPath);
+      } else if (entity is Directory) {
+        // Create the subdirectory and copy its contents
+        final newDirectory = Directory(newPath);
+        await newDirectory.create(recursive: true);
+        await _copyDirectory(entity, newDirectory);
+      }
+    }
+  } catch (e) {
+    throw ('Error copying directory: $e');
   }
 }

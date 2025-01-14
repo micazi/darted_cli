@@ -92,3 +92,8 @@
 **FEAT**: Added Recursive map validation for structure-like YAML components.
 **DOC**: Updated the format of the `CHANGELOG` file.
 **DOC**: Updated the example file.
+
+## 0.1.23
+
+**FIX**: Copy methods for both files and directories not working.
+**DOC**: Updated License file for 2025.
