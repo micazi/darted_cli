@@ -15,7 +15,7 @@ class FieldRule {
   final bool required; // Whether the field is required.
   final List<String>? allowedValues; // List of allowed values for a 'list' key.
   final RegExp?
-      matchesPattern; // A RegExp that this key needs to match to be valid (Only for String values).
+      matchesPattern; // A RegExp that this key needs to match to be valid (Only for String/Lists values).
   final Map<String, FieldRule>?
       nestedFields; // Nested fields if the type is 'map'.
   final Map<RegExp, FieldRule?>?

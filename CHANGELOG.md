@@ -105,3 +105,4 @@
 ## 0.1.25
 
 **FIX**: Recursive map validation wasn't behaving as expected with nested `required` fields.
+**FEAT**: Updated the `matchesPattern` parameter of the schema validation to apply to List types.
