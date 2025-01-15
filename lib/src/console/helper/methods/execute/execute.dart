@@ -7,8 +7,8 @@ Future<dynamic> executeCommandImpl(String commandWithArgs) async {
     final commandArgs = parseArguments(commandWithArgs);
 
     // Run the command
-    final result = await Process.run(commandArgs[0], commandArgs.sublist(1));
-
+    final result = await Process.run(commandArgs[0], commandArgs.sublist(1),
+        runInShell: Platform.isWindows);
     // Handle the result (check for errors and print output)
     if (result.exitCode != 0 || result.stderr.isNotEmpty) {
       throw result.stderr.toString();

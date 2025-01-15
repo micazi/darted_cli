@@ -1,6 +1,6 @@
 name: darted_cli
 description: darted_cli is a customizable Dart CLI framework for building command-line tools with hierarchical command structures, argument parsing, and flag management.
-version: 0.1.26
+version: 0.1.27
 homepage: https://github.com/micazi/darted_cli
 
 environment:

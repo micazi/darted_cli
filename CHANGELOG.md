@@ -111,3 +111,6 @@
 
 **FIX**: updated misspelled 'describtion' wording.
 **FIX**: updated getUserInput function to work with consecutive requests as it threw 'Stream has already been listened to' before.
+
+## 0.1.27
+**FIX**: updated executeCommand function to run in shell within the Windows platform to allow for executables to run.
