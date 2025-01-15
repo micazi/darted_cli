@@ -64,11 +64,11 @@
 
 ## 0.1.16
 
-**DEPS**: Updated dependancies & Added `allowed` and `excluded` parameters in the ListAll functions.
+**DEPS**: Updated dependencies & Added `allowed` and `excluded` parameters in the ListAll functions.
 
 ## 0.1.17
 
-**FEAT**: Added describtion to `dartedFlag` and `dartedArgument` models.
+**FEAT**: Added description to `dartedFlag` and `dartedArgument` models.
 
 ## 0.1.18
 
@@ -106,3 +106,7 @@
 
 **FIX**: Recursive map validation wasn't behaving as expected with nested `required` fields.
 **FEAT**: Updated the `matchesPattern` parameter of the schema validation to apply to List types.
+
+## 0.1.26
+
+**FIX**: updated misspelled 'describtion' wording.

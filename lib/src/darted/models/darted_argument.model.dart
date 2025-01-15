@@ -1,7 +1,7 @@
 class DartedArgument {
   final String name;
   final String abbreviation;
-  final String? describtion;
+  final String? description;
   //
   final String? defaultValue;
   //
@@ -11,7 +11,7 @@ class DartedArgument {
   DartedArgument({
     required this.name,
     required this.abbreviation,
-    this.describtion,
+    this.description,
     this.defaultValue,
     required this.isMultiOption,
     this.acceptedMultiOptionValues,
@@ -20,6 +20,6 @@ class DartedArgument {
 
   @override
   String toString() {
-    return 'DartedArgument(name: $name, abbreviation: $describtion,abbreviation: $describtion, defaultValue: $defaultValue, isMultiOption: $isMultiOption, acceptedMultiOptionValues: $acceptedMultiOptionValues, optionsSeparator: $optionsSeparator)';
+    return 'DartedArgument(name: $name, abbreviation: $description ,abbreviation: $description , defaultValue: $defaultValue, isMultiOption: $isMultiOption, acceptedMultiOptionValues: $acceptedMultiOptionValues, optionsSeparator: $optionsSeparator)';
   }
 }
