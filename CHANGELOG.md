@@ -101,3 +101,7 @@
 ## 0.1.24
 
 **FEAT**: Added DartToYaml Converter to revert back the extraction process.
+
+## 0.1.25
+
+**FIX**: Recursive map validation wasn't behaving as expected with nested `required` fields.

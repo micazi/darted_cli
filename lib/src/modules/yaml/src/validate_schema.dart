@@ -74,16 +74,43 @@ void _validateField(
     }
   }
 
-  // matchesPattern validation
+  // matchesPattern validation for Strings
   if (rule.matchesPattern != null &&
       value is String &&
       !rule.matchesPattern!.hasMatch(value)) {
     throw ('Invalid Value: $fieldKey should match the pattern "${rule.matchesPattern!.pattern}", but got "$value"');
   }
+
+  // matchesPattern validation for Lists
+  if (rule.matchesPattern != null &&
+      value is List &&
+      value.any((item) => !rule.matchesPattern!.hasMatch(item))) {
+    throw ('Invalid Value: $fieldKey items should all match the pattern "${rule.matchesPattern!.pattern}", but  "${value.where((item) => !rule.matchesPattern!.hasMatch(item)).first}" doesn\'t ');
+  }
 }
 
-void _validateRecursiveMap(String fieldKey, Map<dynamic, dynamic> map,
-    Map<RegExp, FieldRule?> recursiveMapSchema, String? yamlFilePath) {
+void _validateRecursiveMap(
+  String fieldKey,
+  Map<dynamic, dynamic> map,
+  Map<RegExp, FieldRule?> recursiveMapSchema,
+  String? yamlFilePath,
+) {
+  // Check if all required fields are present
+  recursiveMapSchema.forEach((pattern, rule) {
+    if (rule != null && rule.required) {
+      bool found = false;
+      map.forEach((key, value) {
+        if (pattern.hasMatch(key.toString())) {
+          found = true;
+        }
+      });
+      if (!found) {
+        throw ('Missing required field: $fieldKey.${pattern.pattern}');
+      }
+    }
+  });
+
+  // Validate each key-value pair in the map
   map.forEach((key, value) {
     final String keyStr = key.toString();
     bool matched = false;
@@ -93,12 +120,18 @@ void _validateRecursiveMap(String fieldKey, Map<dynamic, dynamic> map,
         matched = true;
         final FieldRule? rule = recursiveMapSchema[pattern];
         if (rule != null) {
-          _validateField(
+          // Validate the current field
+          _validateField('$fieldKey.$keyStr', rule, value, yamlFilePath);
+
+          // If the value is a map and the rule has a recursiveMapSchema, validate it recursively
+          if (value is Map && rule.recursiveMapSchema != null) {
+            _validateRecursiveMap(
               '$fieldKey.$keyStr',
-              rule.copyWith(
-                  recursiveMapSchema: value is Map ? recursiveMapSchema : null),
               value,
-              yamlFilePath);
+              rule.recursiveMapSchema!,
+              yamlFilePath,
+            );
+          }
         }
         break;
       }
