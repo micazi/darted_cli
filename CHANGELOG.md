@@ -110,3 +110,4 @@
 ## 0.1.26
 
 **FIX**: updated misspelled 'describtion' wording.
+**FIX**: updated getUserInput function to work with consecutive requests as it threw 'Stream has already been listened to' before.

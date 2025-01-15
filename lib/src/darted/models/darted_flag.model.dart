@@ -13,8 +13,18 @@ class DartedFlag {
     required this.appliedByDefault,
   });
 
-  static DartedFlag help = DartedFlag(name: 'help', abbreviation: 'h', description: 'show this helpful message.', canBeNegated: false, appliedByDefault: false);
-  static DartedFlag version = DartedFlag(name: 'version', description: 'show the version of the tool.', abbreviation: 'v', canBeNegated: false, appliedByDefault: false);
+  static DartedFlag help = DartedFlag(
+      name: 'help',
+      abbreviation: 'h',
+      description: 'show this helpful message.',
+      canBeNegated: false,
+      appliedByDefault: false);
+  static DartedFlag version = DartedFlag(
+      name: 'version',
+      description: 'show the version of the tool.',
+      abbreviation: 'v',
+      canBeNegated: false,
+      appliedByDefault: false);
 
   @override
   String toString() {
