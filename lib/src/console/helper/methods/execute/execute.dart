@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'parse_args.dart';
 
@@ -6,17 +7,27 @@ Future<dynamic> executeCommandImpl(String commandWithArgs) async {
     // Parse the command and arguments
     final commandArgs = parseArguments(commandWithArgs);
 
-    // Run the command
-    final result = await Process.run(commandArgs[0], commandArgs.sublist(1),
-        runInShell: Platform.isWindows);
-    // Handle the result (check for errors and print output)
-    if (result.exitCode != 0 || result.stderr.isNotEmpty) {
-      throw result.stderr.toString();
-    }
+    // Start the process
+    final process = await Process.start(
+      commandArgs[0],
+      commandArgs.sublist(1),
+      runInShell: Platform.isWindows,
+    );
 
-    // Return the output if it exists
-    if (result.stdout.isNotEmpty) {
-      return result.stdout;
+    // Handle stdout in real-time
+    process.stdout.transform(utf8.decoder).listen((data) {
+      stdout.write(data);
+    });
+
+    // Handle stderr in real-time
+    process.stderr.transform(utf8.decoder).listen((data) {
+      stderr.write(data);
+    });
+
+    // Wait for the process to complete and check exit code
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw 'Process exited with code $exitCode';
     }
   } catch (e) {
     throw e.toString();

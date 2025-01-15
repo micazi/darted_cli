@@ -114,3 +114,4 @@
 
 ## 0.1.27
 **FIX**: updated executeCommand function to run in shell within the Windows platform to allow for executables to run.
+**FEAT**: updated executeCommand function to pass-through stdout text.
