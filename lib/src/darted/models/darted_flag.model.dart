@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class DartedFlag {
   final String name;
   final String abbreviation;
@@ -9,8 +10,8 @@ class DartedFlag {
     required this.name,
     required this.abbreviation,
     this.description,
-    required this.canBeNegated,
-    required this.appliedByDefault,
+    this.canBeNegated = false,
+    this.appliedByDefault = false,
   });
 
   static DartedFlag help = DartedFlag(
@@ -29,5 +30,21 @@ class DartedFlag {
   @override
   String toString() {
     return 'DartedFlag(name: $name, abbreviation: $abbreviation, description : $description , canBeNegated: $canBeNegated, appliedByDefault: $appliedByDefault)';
+  }
+
+  DartedFlag copyWith({
+    String? name,
+    String? abbreviation,
+    String? description,
+    bool? canBeNegated,
+    bool? appliedByDefault,
+  }) {
+    return DartedFlag(
+      name: name ?? this.name,
+      abbreviation: abbreviation ?? this.abbreviation,
+      description: description ?? this.description,
+      canBeNegated: canBeNegated ?? this.canBeNegated,
+      appliedByDefault: appliedByDefault ?? this.appliedByDefault,
+    );
   }
 }

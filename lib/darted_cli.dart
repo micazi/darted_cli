@@ -39,6 +39,9 @@ Future<void> dartedEntry({
 
   String? customMainHelper = await customEntryHelper?.call(commandsTree);
 
+  // Parse main argument if exists
+  callStack = await DartedHelper.parseMainArg(commandsTree, callStack, customCommandInvalidError: customCommandInvalidError);
+
   // Validate against the call stack
   bool validated = await DartedHelper.validateCallStack(
     commandsTree,
