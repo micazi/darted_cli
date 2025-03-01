@@ -1,9 +1,11 @@
-## 0.1.5
+## 0.2.0
 **FEAT**: Added an option to set an argument as 'main' which would allow the user to pass it in as a required positioned argument without it's name. e.g. `your_package command neededArg --otherOptionalArgName otherArgValue`.
 **Breaking Change**: Added functionality to find the closest match of misspelled commands and arguments, and are now passed in the custom Error Callbacks.
 **FEAT**: updated 'defaultHelperMessage' implementation.
 **FEAT**: updated Darted models with `.copyWith()` implementation.
 **DOCS**: updated CHANGELOG file to be newest-first.
+
+---
 
 ## 0.1.27
 **FIX**: updated executeCommand function to run in shell with in the Windows platform to allow for executables to run.
