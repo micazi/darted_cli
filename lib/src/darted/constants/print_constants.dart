@@ -9,8 +9,10 @@ const String endPrint = """|-------""";
 //
 //----------------
 //
-Future<String> defaultHelperMessage(DartedCommand command) async{
-    String pubspecPath = await IOHelper.file.find(IOHelper.directory.getCurrent(), 'pubspec.yaml').then((v) => v.first);
+Future<String> defaultHelperMessage(DartedCommand command) async {
+  String pubspecPath = await IOHelper.file
+      .find(IOHelper.directory.getCurrent(), 'pubspec.yaml')
+      .then((v) => v.first);
   YamlMap pubspecContent = await YamlModule.load(pubspecPath);
   String packageName = pubspecContent['name'];
   //
@@ -20,11 +22,14 @@ Future<String> defaultHelperMessage(DartedCommand command) async{
               a?.description?.withColor(ConsoleColor.grey) ?? ''))
           .toList() ??
       []);
-  String? mainArg = command.arguments?.where((arg) => (arg?.isMainReq ?? false)).firstOrNull?.name;
-    String helpDescription =
+  String? mainArg = command.arguments
+      ?.where((arg) => (arg?.isMainReq ?? false))
+      .firstOrNull
+      ?.name;
+  String helpDescription =
       "${command.name.withColor(ConsoleColor.cyan)} :- ${command.helperDescription}";
   String usage =
-      "Usage: $packageName ${command.name} ${mainArg != null? '<$mainArg> ' : ''}[--argumentKey value] [--flag, --no-flag]";
+      "Usage: $packageName ${command.name} ${mainArg != null ? '<$mainArg> ' : ''}[--argumentKey value] [--flag, --no-flag]";
   String availableArgsTitle = "Available Arguments:";
   String justifiedArgs = (command.arguments?.isNotEmpty ?? false)
       ? ConsoleHelper.justifyMap(argsList, gapSeparatorSize: 4)

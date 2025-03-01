@@ -9,8 +9,9 @@ Future<void> dartedEntry({
   required List<String> input,
   // Validation Customizations
   Future<String> Function(List<DartedCommand> commandsTree)? customEntryHelper,
-  String Function(String)? customCommandInvalidError,
-  String Function(String, Map<String, dynamic>)? customArgumentInvalidError,
+  String Function(String, String?)? customCommandInvalidError,
+  String Function(String, Map<String, dynamic>, String?)?
+      customArgumentInvalidError,
   String Function(String, Map<String, dynamic>, List<String>)?
       customArgumentOptionsInvalidError,
   String Function(String, Map<String, bool>)? customFlagInvalidError,
@@ -40,7 +41,8 @@ Future<void> dartedEntry({
   String? customMainHelper = await customEntryHelper?.call(commandsTree);
 
   // Parse main argument if exists
-  callStack = await DartedHelper.parseMainArg(commandsTree, callStack, customCommandInvalidError: customCommandInvalidError);
+  callStack = await DartedHelper.parseMainArg(commandsTree, callStack,
+      customCommandInvalidError: customCommandInvalidError);
 
   // Validate against the call stack
   bool validated = await DartedHelper.validateCallStack(

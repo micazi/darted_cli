@@ -103,8 +103,8 @@ Future<void> callbackMapperImpl(
     if (finalFlags.containsKey(DartedFlag.help.name) ||
         finalFlags.containsKey(DartedFlag.help.abbreviation)) {
       ConsoleHelper.write(
-        (customHelpResponse?.call(lastCommand) ?? await
-            defaultHelperMessage(lastCommand)),
+        (customHelpResponse?.call(lastCommand) ??
+            await defaultHelperMessage(lastCommand)),
       );
       return;
     }

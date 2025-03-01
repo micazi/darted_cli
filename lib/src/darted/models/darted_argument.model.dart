@@ -20,7 +20,6 @@ class DartedArgument {
     this.optionsSeparator,
   });
 
-
   @override
   String toString() {
     return 'DartedArgument(name: $name, abbreviation: $abbreviation, description: $description, defaultValue: $defaultValue, isMainReq: $isMainReq, isMultiOption: $isMultiOption, acceptedMultiOptionValues: $acceptedMultiOptionValues, optionsSeparator: $optionsSeparator)';
@@ -43,7 +42,8 @@ class DartedArgument {
       defaultValue: defaultValue ?? this.defaultValue,
       isMainReq: isMainReq ?? this.isMainReq,
       isMultiOption: isMultiOption ?? this.isMultiOption,
-      acceptedMultiOptionValues: acceptedMultiOptionValues ?? this.acceptedMultiOptionValues,
+      acceptedMultiOptionValues:
+          acceptedMultiOptionValues ?? this.acceptedMultiOptionValues,
       optionsSeparator: optionsSeparator ?? this.optionsSeparator,
     );
   }

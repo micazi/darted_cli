@@ -79,6 +79,9 @@ final List<DartedCommand> commandsTree = [
           DartedArgument(name: 'name', abbreviation: 'n', defaultValue: 'new_flutter_project', isMultiOption: false),
           // You also have the option to allow an argument to have multible options, with input validation based on the accepted options YOU enter!
           DartedArgument(name: 'platforms', abbreviation: 'p', acceptedMultiOptionValues: 'android,ios,web', isMultiOption: true, optionsSeparator: ','),
+          // - **NEW in 0.1.5** Set an argument as 'Main', This will make it required and positional. 
+          // e.g `your_package create the/path/required`
+          DartedArgument(name: 'path', abbreviation: 'p', isMainReq: true),
         ],
         // Now, give it the flags allowed for this specific command, You can allow it to be negated too! (--no-flag)
         flags: [
