@@ -20,7 +20,11 @@ class DartedHelper {
               parsedArguments, parsedFlags);
 
   /// Parse main argument if exists.
-  static parseMainArg(
+  static Future<
+      (
+        Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)>?,
+        String? errorCode
+      )> parseMainArg(
           List<DartedCommand> commandsTree,
           Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)>
               callStack,
@@ -32,7 +36,7 @@ class DartedHelper {
           customCommandInvalidError: customCommandInvalidError);
 
   /// Validate the callStack against the provided commandsTree.
-  static Future<bool> validateCallStack(
+  static Future<(bool isValid, String? error)> validateCallStack(
     List<DartedCommand> commandsTree,
     Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)>
         callStack, {

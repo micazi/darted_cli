@@ -1,3 +1,4 @@
+import 'console_helper.dart';
 import 'src/darted/models/darted_models.exports.dart';
 import 'src/darted/helper/darted.helper.dart';
 //
@@ -41,11 +42,22 @@ Future<void> dartedEntry({
   String? customMainHelper = await customEntryHelper?.call(commandsTree);
 
   // Parse main argument if exists
-  callStack = await DartedHelper.parseMainArg(commandsTree, callStack,
-      customCommandInvalidError: customCommandInvalidError);
+  await DartedHelper.parseMainArg(commandsTree, callStack,
+          customCommandInvalidError: customCommandInvalidError)
+      .then((res) {
+    if (res.$1 != null && res.$2 == null) {
+      // No errors
+      callStack = res.$1!;
+    } else {
+      // has error
+      ConsoleHelper.write(res.$2!);
+      ConsoleHelper.exit(1);
+    }
+  });
 
   // Validate against the call stack
-  bool validated = await DartedHelper.validateCallStack(
+  bool validated = true;
+  await DartedHelper.validateCallStack(
     commandsTree,
     callStack,
     //
@@ -56,7 +68,14 @@ Future<void> dartedEntry({
     customArgumentOptionsInvalidError: customArgumentOptionsInvalidError,
     customFlagInvalidError: customFlagInvalidError,
     customFlagNegatedError: customFlagNegatedError,
-  );
+  ).then((res) {
+    if (!res.$1 && res.$2 != null) {
+      validated = false;
+      ConsoleHelper.write(res.$2!);
+      ConsoleHelper.exit(1);
+    }
+  });
+
   if (validated) {
     // return the callback
     await DartedHelper.callbackMapper(

@@ -8,7 +8,7 @@ import '../../constants/print_constants.dart';
 import '../../models/darted_models.exports.dart';
 import 'find_command_closest_match.dart';
 
-Future<bool> validateCallStackImpl(
+Future<(bool isValid, String? error)> validateCallStackImpl(
   List<DartedCommand> commandsTree,
   Map<String, (Map<String, dynamic> arguments, Map<String, bool> flags)> cs,
   //
@@ -35,18 +35,13 @@ Future<bool> validateCallStackImpl(
 
   // check if it's the version call
   if (callStack.length == 1 && callStack.keys.first == 'version') {
-    ConsoleHelper.write(
-      (customVersionResponse ?? await defaultVersionMessage()),
-    );
-    return false;
+    return (false, (customVersionResponse ?? await defaultVersionMessage()));
   }
 
   // Check if there's no commands in the stack, return the entry helper.
   if (callStack.isEmpty) {
     // Entry Helper
-    ConsoleHelper.write(
-        customEntryHelper ?? await defaultEntryHelper(commandsTree));
-    return false;
+    return (false, customEntryHelper ?? await defaultEntryHelper(commandsTree));
   }
 
   // Loop through the callStack entries.
@@ -65,11 +60,32 @@ Future<bool> validateCallStackImpl(
     if (currentNode == null) {
       String? findCloseMatch = getClosestMatch(
           currentCommandName, availableCommands.map((cc) => cc.name).toList());
-      ConsoleHelper.write(
+      return (
+        false,
         customCommandInvalidError?.call(currentCommandName, findCloseMatch) ??
-            "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Command ${currentCommandName.withColor(ConsoleColor.blue)} is invalid.\n|\n${findCloseMatch != null ? '| Could you possibly mean ${findCloseMatch.withColor(ConsoleColor.green)}?\n' : ''}$endPrint\n",
+            "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Command ${currentCommandName.withColor(ConsoleColor.blue)} is invalid.\n|\n${findCloseMatch != null ? '| Could you possibly mean ${findCloseMatch.withColor(ConsoleColor.green)}?\n' : ''}$endPrint\n"
       );
-      return false;
+    }
+
+    // Validate the command's main argument is supplied.
+    DartedArgument? currentCommandMainArg = currentNode.arguments
+        ?.where((a) => (a?.isMainReq ?? false))
+        .firstOrNull;
+    if (currentCommandMainArg != null) {
+      // This command has a main Arg.
+      if (!currentCommandArguments.keys.contains(currentCommandMainArg.name) &&
+          !currentCommandArguments.keys
+              .contains(currentCommandMainArg.abbreviation)) {
+        // No main argument supplied
+        return (
+          false,
+          customArgumentInvalidError?.call(
+                  currentCommandName,
+                  Map.fromEntries([MapEntry(currentCommandMainArg.name, null)]),
+                  null) ??
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Positional Argument ${currentCommandMainArg.name.withColor(ConsoleColor.green)} is required for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n$endPrint\n",
+        );
+      }
     }
 
     // Validate the command's arguments.
@@ -86,16 +102,15 @@ Future<bool> validateCallStackImpl(
           findCloseMatch = getClosestMatch(
               arg, currentNode.arguments!.map((arg) => arg!.name).toList());
         }
-
-        ConsoleHelper.write(
+        return (
+          false,
           customArgumentInvalidError?.call(
                   currentCommandName,
                   Map.fromEntries(
                       [MapEntry(arg, currentCommandArguments[arg])]),
                   findCloseMatch) ??
-              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n${findCloseMatch != null ? '| Could you possibly mean ${findCloseMatch.withColor(ConsoleColor.green)}?\n' : ''}$endPrint\n",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n${findCloseMatch != null ? '| Could you possibly mean ${findCloseMatch.withColor(ConsoleColor.green)}?\n' : ''}$endPrint\n"
         );
-        return false;
       }
 
       bool isMultiOption = argumentNode.isMultiOption;
@@ -108,15 +123,15 @@ Future<bool> validateCallStackImpl(
             .split(argumentNode.optionsSeparator ?? '/');
 
         if (!acceptedOptions.containsAll(suppliedOptions)) {
-          ConsoleHelper.write(
+          return (
+            false,
             customArgumentOptionsInvalidError?.call(
                     currentCommandName,
                     Map.fromEntries(
                         [MapEntry(arg, currentCommandArguments[arg])]),
                     acceptedOptions) ??
-                "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command has invlid options. Supperted (${acceptedOptions.join(',')}) and supplied (${suppliedOptions.join(',')}).\n|\n$endPrint\n",
+                "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Argument ${arg.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command has invlid options. Supperted (${acceptedOptions.join(',')}) and supplied (${suppliedOptions.join(',')}).\n|\n$endPrint\n"
           );
-          return false;
         }
       }
     }
@@ -131,34 +146,34 @@ Future<bool> validateCallStackImpl(
       bool isFlagNegated = !(currentCommandFlags[flag] ?? true);
       //
       if (!flagExists) {
-        ConsoleHelper.write(
+        return (
+          false,
           customFlagInvalidError?.call(
                   currentCommandName,
                   Map.fromEntries([
                     MapEntry(flag, (currentCommandFlags[flag] ?? false))
                   ])) ??
-              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n$endPrint\n",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} is invalid for the ${currentCommandName.withColor(ConsoleColor.blue)} command.\n|\n$endPrint\n"
         );
-        return false;
       }
 
       if (!canBeNegated && isFlagNegated) {
-        ConsoleHelper.write(
+        return (
+          false,
           customFlagNegatedError?.call(
                   currentCommandName,
                   Map.fromEntries([
                     MapEntry(flag, (currentCommandFlags[flag] ?? false))
                   ])) ??
-              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command doesn't support negation.\n|\n$endPrint\n",
+              "$startPrint\n|\n| ${'Error:'.withColor(ConsoleColor.red)} Flag ${flag.withColor(ConsoleColor.green)} of the ${currentCommandName.withColor(ConsoleColor.blue)} command doesn't support negation.\n|\n$endPrint\n"
         );
-        return false;
       }
     }
 
     // Move to the next level of the tree
     availableCommands = currentNode.subCommands ?? [];
   }
-  return true;
+  return (true, null);
 }
 
 Future<String> defaultEntryHelper(List<DartedCommand> commandsTree) async {

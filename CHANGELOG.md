@@ -1,3 +1,6 @@
+## 0.2.1
+**FIX**: Fixed issues in subcommands main argument parsing.
+
 ## 0.2.0
 **FEAT**: Added an option to set an argument as 'main' which would allow the user to pass it in as a required positioned argument without it's name. e.g. `your_package command neededArg --otherOptionalArgName otherArgValue`.
 **Breaking Change**: Added functionality to find the closest match of misspelled commands and arguments, and are now passed in the custom Error Callbacks.
