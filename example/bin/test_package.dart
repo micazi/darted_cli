@@ -31,7 +31,21 @@ final List<DartedCommand> commandsTree = [
 
       // - **NEW in 0.1.5** Set an argument as 'Main', This will make it required and positional.
       // e.g `your_package create the/path/required`
-      DartedArgument(name: 'path', abbreviation: 'p', isMainReq: true),
+      DartedArgument(
+        name: 'path',
+        abbreviation: 'p',
+        isMainReq: true,
+        // - **NEW in 1.0.0** Bind directly to environment variables!
+        environmentVariable: 'APP_CREATE_PATH',
+      ),
+      // - **NEW in 1.0.0** Control configuration file eligibility (defaults to true)
+      DartedArgument(
+        name: 'token',
+        abbreviation: 't',
+        description: 'Sensitive token passed via CLI or Env only',
+        isConfigurableInFile: false,
+        environmentVariable: 'APP_SECRET_TOKEN',
+      ),
     ],
     // Now, give it the flags allowed for this specific command, You can allow it to be negated too! (--no-flag)
     flags: [
@@ -45,10 +59,13 @@ final List<DartedCommand> commandsTree = [
           canBeNegated: false,
           appliedByDefault: true),
       DartedFlag(
-          name: 'solo',
-          abbreviation: 's',
-          canBeNegated: true,
-          appliedByDefault: false),
+        name: 'solo',
+        abbreviation: 's',
+        canBeNegated: true,
+        appliedByDefault: false,
+        // - **NEW in 1.0.0** Bind flags to environment variables! (accepts true/false, 1/0, yes/no)
+        environmentVariable: 'APP_SOLO',
+      ),
     ],
     // And finally, give your command a callback based on the arguments and flags you get. It can't get any easier!
     callback: (arguments, flags) => ConsoleHelper.write(
@@ -96,6 +113,10 @@ final List<DartedCommand> commandsTree = [
 void main(List<String> input) async => await dartedEntry(
       input: input,
       commandsTree: commandsTree,
+      // - **NEW in 1.0.0** Generate a sample configuration file via `<your_tool> generate-sample-config`
+      generateSampleConfig: true,
+      // - **NEW in 1.0.0** Specify configuration file (4-tier precedence: CLI > Env > Config > Defaults)
+      configPath: 'darted.yaml',
       // The main entry command when someone types in [your_package]
       customEntryHelper: (tree) async {
         return await AsciiArtModule.textToAscii('DARTED',

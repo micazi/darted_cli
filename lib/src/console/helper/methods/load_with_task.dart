@@ -1,6 +1,7 @@
 import '../../models/loading/loader_position.enum.dart';
 
 import '../../models/styling/colors.enum.dart';
+import '../../models/styling/styling_extension.dart';
 import '../../models/loading/console_loader.enum.dart';
 import '../../models/loading/loader_base.dart';
 
@@ -23,6 +24,11 @@ Future<void> loadWithTaskImpl({
           animationSpeed: loaderSpeed,
           animationPosition: loaderPosition);
   await cLoader.start();
-  await process();
-  await cLoader.stop(completionSymbol: loaderSuccessReplacement);
+  try {
+    await process();
+    await cLoader.stop(completionSymbol: loaderSuccessReplacement);
+  } catch (_) {
+    await cLoader.stop(completionSymbol: '✗'.withColor(ConsoleColor.red));
+    rethrow;
+  }
 }

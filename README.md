@@ -41,6 +41,12 @@ You can see how to implement your next big idea using _darted_cli_ through [This
 - **Customizable Responses**: Define custom error messages for invalid inputs.
 - **Interactive CLI**: Generate dynamic help text for commands.
 - **Developer-Friendly**: Focused on ease of use with minimal boilerplate.
+- **Configuration Files (NEW in 1.0.0)**: Load and validate YAML/JSON configuration files with nested command sections.
+- **Sample Config Generation (NEW in 1.0.0)**: Built-in `generate-sample-config` command to automatically generate documented configs.
+- **Environment Variables (NEW in 1.0.0)**: Direct binding of arguments and flags to process environment variables.
+- **Unified 4-Tier Precedence (NEW in 1.0.0)**: `CLI Arguments & Flags` -> `Environment Variables` -> `Configuration File` -> `Declared Defaults`.
+- **POSIX/GNU Compliant Tokenizer (NEW in 1.0.0)**: Attached values (`--key=value`, `-p8080`), combined flags (`-rf`), and `--` end-of-options.
+- **Testable & Embeddable (NEW in 1.0.0)**: Safe programmatic execution via `dartedExecute()` returning typed results.
 
 ---
 
@@ -81,7 +87,10 @@ final List<DartedCommand> commandsTree = [
           DartedArgument(name: 'platforms', abbreviation: 'p', acceptedMultiOptionValues: 'android,ios,web', isMultiOption: true, optionsSeparator: ','),
           // - **NEW in 0.1.5** Set an argument as 'Main', This will make it required and positional. 
           // e.g `your_package create the/path/required`
-          DartedArgument(name: 'path', abbreviation: 'p', isMainReq: true),
+          // - **NEW in 1.0.0** Bind directly to environment variables!
+          DartedArgument(name: 'path', abbreviation: 'p', isMainReq: true, environmentVariable: 'APP_CREATE_PATH'),
+          // - **NEW in 1.0.0** Control configuration file eligibility (exclude sensitive arguments from generated configs!)
+          DartedArgument(name: 'token', abbreviation: 't', isConfigurableInFile: false, environmentVariable: 'APP_SECRET_TOKEN'),
         ],
         // Now, give it the flags allowed for this specific command, You can allow it to be negated too! (--no-flag)
         flags: [
@@ -89,7 +98,8 @@ final List<DartedCommand> commandsTree = [
           DartedFlag.help,
           // Oh, and you can also allow flags to be applied by default even if they are not passed in..
           DartedFlag(name: 'package', abbreviation: 'pa', canBeNegated: false, appliedByDefault: true),
-          DartedFlag(name: 'solo', abbreviation: 's', canBeNegated: true, appliedByDefault: false),
+          // - **NEW in 1.0.0** Bind flags to environment variables! (accepts true/false, 1/0, yes/no)
+          DartedFlag(name: 'solo', abbreviation: 's', canBeNegated: true, appliedByDefault: false, environmentVariable: 'APP_SOLO'),
         ],
         // And finally, give your command a callback based on the arguments and flags you get. It can't get any easier!
         callback: (arguments, flags) => ConsoleHelper.write(
@@ -183,6 +193,10 @@ import 'package:darted_cli/darted_cli.dart';
 void main(List<String> input) async => await dartedEntry(
       input: input,
       commandsTree: commandsTree,
+      // - **NEW in 1.0.0** Opt into sample config generation (`my_package generate-sample-config`)
+      generateSampleConfig: true,
+      // - **NEW in 1.0.0** Load configuration files with 4-tier precedence: CLI > Env > Config > Defaults
+      configPath: 'darted.yaml',
       // The main entry command when someone types in [your_package]
       customEntryHelper: (tree) async {
        return await AsciiArtModule.textToAscii('DARTED', beforeEachLine: "|  ");
@@ -190,10 +204,41 @@ void main(List<String> input) async => await dartedEntry(
       // Available commands, arguments, and flags to process.
       customVersionResponse: () => "when i get -v, here's a response!",
       // Oh yeah, the console helper has colors, background colors, and text modifiers!
-      customHelpResponse: () => 'custom response for the -h flag?'
+      customHelpResponse: (command) => 'custom response for the -h flag?'
       .withColor(ConsoleColor.cyan),
     );
 
+```
+
+##### Sample Configuration Generation (NEW in 1.0.0)
+
+When `generateSampleConfig: true` is passed, users can generate a complete sample configuration file based on your command tree:
+
+```bash
+dart run my_package generate-sample-config
+# Or with a custom output path and overwrite flag:
+dart run my_package generate-sample-config --output my_config.yaml --force
+```
+
+##### 4-Tier Precedence Order (NEW in 1.0.0)
+
+Darted CLI resolves inputs through a unified precedence hierarchy:
+1. **CLI Arguments & Flags** (highest priority)
+2. **Process Environment Variables** (via `environmentVariable`)
+3. **Configuration File** (YAML / JSON via `configPath`)
+4. **Declared Defaults** (fallback)
+
+##### Programmatic Execution & Testing (NEW in 1.0.0)
+
+Use `dartedExecute` to run commands in unit tests without terminating the process with `exit()`:
+
+```dart
+final result = await dartedExecute(
+  commandsTree: commandsTree,
+  input: ['create', 'my/path', '--platforms', 'android,ios'],
+);
+print(result.isSuccess); // true
+print(result.parsedCommand!.arguments['path']); // 'my/path'
 ```
 
 So when the user enters

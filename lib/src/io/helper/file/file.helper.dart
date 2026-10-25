@@ -104,7 +104,8 @@ class FileHelper {
   /// Write content to a file as bytes (Uint8List). File will be created if it doesn't exist.
   Future<void> writeBytes(String path, Uint8List content,
           {bool rewrite = true}) async =>
-      await writeBytesToFile(path.replaceSeparator(), content, rewrite: true);
+      await writeBytesToFile(path.replaceSeparator(), content,
+          rewrite: rewrite);
 
   /// Read the content of a file as String
   Future<String> readAsString(String path) async =>

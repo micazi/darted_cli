@@ -9,6 +9,9 @@ class DartedArgument {
   final bool isMultiOption;
   final String? acceptedMultiOptionValues;
   final String? optionsSeparator;
+  final bool isConfigurableInFile;
+  final String? environmentVariable;
+
   DartedArgument({
     required this.name,
     required this.abbreviation,
@@ -18,11 +21,13 @@ class DartedArgument {
     this.isMultiOption = false,
     this.acceptedMultiOptionValues,
     this.optionsSeparator,
+    this.isConfigurableInFile = true,
+    this.environmentVariable,
   });
 
   @override
   String toString() {
-    return 'DartedArgument(name: $name, abbreviation: $abbreviation, description: $description, defaultValue: $defaultValue, isMainReq: $isMainReq, isMultiOption: $isMultiOption, acceptedMultiOptionValues: $acceptedMultiOptionValues, optionsSeparator: $optionsSeparator)';
+    return 'DartedArgument(name: $name, abbreviation: $abbreviation, description: $description, defaultValue: $defaultValue, isMainReq: $isMainReq, isMultiOption: $isMultiOption, acceptedMultiOptionValues: $acceptedMultiOptionValues, optionsSeparator: $optionsSeparator, isConfigurableInFile: $isConfigurableInFile, environmentVariable: $environmentVariable)';
   }
 
   DartedArgument copyWith({
@@ -34,6 +39,8 @@ class DartedArgument {
     bool? isMultiOption,
     String? acceptedMultiOptionValues,
     String? optionsSeparator,
+    bool? isConfigurableInFile,
+    String? environmentVariable,
   }) {
     return DartedArgument(
       name: name ?? this.name,
@@ -45,6 +52,8 @@ class DartedArgument {
       acceptedMultiOptionValues:
           acceptedMultiOptionValues ?? this.acceptedMultiOptionValues,
       optionsSeparator: optionsSeparator ?? this.optionsSeparator,
+      isConfigurableInFile: isConfigurableInFile ?? this.isConfigurableInFile,
+      environmentVariable: environmentVariable ?? this.environmentVariable,
     );
   }
 }

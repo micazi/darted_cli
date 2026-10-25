@@ -64,8 +64,9 @@ Future<
                 content.substring(0, matchStart).split('\n').length;
 
             // Calculate the start and end indices of the line in the full content
-            final lineStartIndex =
-                content.lastIndexOf('\n', matchStart - 1) + 1;
+            final lineStartIndex = matchStart > 0
+                ? content.lastIndexOf('\n', matchStart - 1) + 1
+                : 0;
             final lineEndIndex = content.indexOf('\n', lineStartIndex);
             final lineContent = content.substring(
               lineStartIndex,

@@ -3,5 +3,7 @@
 # FVM Version Cache
 .fvm/
 
-testing/
-test/
+
+# AI-related files
+AGENTS.md
+docs/

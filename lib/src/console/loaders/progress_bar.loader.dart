@@ -18,8 +18,9 @@ class ProgressBarLoader extends ConsoleLoaderBase {
   Future<void> start() async {
     isLoading = true;
     int progress = 0;
+    final interval = speed ?? const Duration(milliseconds: 100);
 
-    Timer.periodic(speed!, (timer) {
+    Timer.periodic(interval, (timer) {
       if (!isLoading) {
         timer.cancel();
       } else {

@@ -28,7 +28,8 @@ class SpinnerLoader extends ConsoleLoaderBase {
   @override
   Future<void> start() async {
     isLoading = true;
-    Timer.periodic(speed!, (timer) {
+    final interval = speed ?? const Duration(milliseconds: 100);
+    Timer.periodic(interval, (timer) {
       if (!isLoading) {
         timer.cancel();
       } else {
