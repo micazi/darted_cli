@@ -2,7 +2,6 @@ import 'dart:io';
 
 import '../models/darted_argument.model.dart';
 import '../models/darted_command.model.dart';
-import '../models/darted_flag.model.dart';
 import '../validation/validation_result.dart';
 
 /// Resolves configuration and option values from process environment variables.

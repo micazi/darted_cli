@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:darted_cli/io_helper.dart';
 import 'package:test/test.dart';
@@ -44,14 +43,14 @@ void main() {
       expect(await IOHelper.directory.exists(subDirPath), isTrue);
       expect(createdDir.existsSync(), isTrue);
 
-      final testFile = '${subDirPath}/nested.txt';
+      final testFile = '$subDirPath/nested.txt';
       await IOHelper.file.writeString(testFile, 'nested content');
 
       // Copy directory
       final copiedDirPath = '${tempDir.path}/copied_dir';
       await IOHelper.directory.copy(subDirPath, copiedDirPath);
       expect(await IOHelper.directory.exists(copiedDirPath), isTrue);
-      expect(await IOHelper.file.exists('${copiedDirPath}/nested.txt'), isTrue);
+      expect(await IOHelper.file.exists('$copiedDirPath/nested.txt'), isTrue);
 
       // Move directory into target parent
       final targetParentDir = '${tempDir.path}/target_parent';

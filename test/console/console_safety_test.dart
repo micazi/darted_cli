@@ -2,6 +2,8 @@ import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/src/console/helper/methods/choose_option.dart';
 import 'package:test/test.dart';
 
+import '../test_helpers.dart';
+
 void main() {
   group('Console Safety & Reliability', () {
     test('withAlignment handles non-TTY and strips ANSI for padding width', () {
@@ -21,12 +23,14 @@ void main() {
       var exceptionThrown = false;
 
       try {
-        await ConsoleHelper.loadWithTask(
-          task: 'Failing task',
-          process: () async {
-            await Future.delayed(const Duration(milliseconds: 10));
-            throw FormatException('Process failed on purpose');
-          },
+        await runSilently(
+          () => ConsoleHelper.loadWithTask(
+            task: 'Failing task',
+            process: () async {
+              await Future.delayed(const Duration(milliseconds: 10));
+              throw const FormatException('Process failed on purpose');
+            },
+          ),
         );
       } catch (e) {
         exceptionThrown = true;

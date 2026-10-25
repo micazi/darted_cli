@@ -4,7 +4,6 @@ import 'package:yaml/yaml.dart';
 
 import '../models/darted_argument.model.dart';
 import '../models/darted_command.model.dart';
-import '../models/darted_flag.model.dart';
 import '../validation/validation_result.dart';
 
 /// Loads and validates configuration files (YAML/JSON) against a [commandsTree].
@@ -58,7 +57,7 @@ class ConfigLoader {
     }
 
     if (yamlData is! Map) {
-      throw ConfigException(
+      throw const ConfigException(
         'Configuration file must contain a key-value mapping at the root level.',
       );
     }

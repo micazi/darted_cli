@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:darted_cli/darted_cli.dart';
 import 'package:test/test.dart';
 
+import '../test_helpers.dart';
+
 void main() {
   group('ConfigGenerator', () {
     test('generates sample YAML for simple command with arguments and flags',
@@ -218,10 +220,12 @@ void main() {
 
       final outPath = '${tempDir.path}/custom_config.yaml';
 
-      final res = await dartedExecute(
-        commandsTree: tree,
-        input: ['generate-sample-config', '--output', outPath],
-        generateSampleConfig: true,
+      final res = await runSilently(
+        () => dartedExecute(
+          commandsTree: tree,
+          input: ['generate-sample-config', '--output', outPath],
+          generateSampleConfig: true,
+        ),
       );
 
       expect(res.isSuccess, isTrue);
@@ -276,10 +280,12 @@ void main() {
         ),
       ];
 
-      final res = await dartedExecute(
-        commandsTree: tree,
-        input: ['generate-sample-config', '--output', outPath, '--force'],
-        generateSampleConfig: true,
+      final res = await runSilently(
+        () => dartedExecute(
+          commandsTree: tree,
+          input: ['generate-sample-config', '--output', outPath, '--force'],
+          generateSampleConfig: true,
+        ),
       );
 
       expect(res.isSuccess, isTrue);

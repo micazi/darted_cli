@@ -1,1 +1,9 @@
+# Development-only files
+test/
 testing/
+scripts/
+tool/
+
+# AI-related files
+AGENTS.md
+docs/

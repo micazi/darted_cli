@@ -59,9 +59,7 @@ DartedCommand createGenerateSampleConfigCommand({
 
       await file.writeAsString(yamlContent);
       ConsoleHelper.write(
-        'Sample configuration successfully generated at: '
-                .withColor(ConsoleColor.green) +
-            outputPath,
+        '${'Sample configuration successfully generated at: '.withColor(ConsoleColor.green)}$outputPath\n',
       );
       return 'Sample configuration successfully generated at: $outputPath';
     },

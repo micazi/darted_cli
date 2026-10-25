@@ -1,8 +1,26 @@
+# Dart tooling & Development
 .dart_tool/
+.packages
+build/
+scripts/
+.vscode/
 
-# FVM Version Cache
+# Dependencies
+pubspec.lock
+
+# IDEs & editors
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# FVM
 .fvm/
-
 
 # AI-related files
 AGENTS.md

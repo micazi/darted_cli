@@ -1,6 +1,4 @@
 import 'package:darted_cli/darted_cli.dart';
-import 'package:darted_cli/src/darted/parser/command_resolver.dart';
-import 'package:darted_cli/src/darted/validation/validation_result.dart';
 import 'package:test/test.dart';
 
 void main() {
